@@ -1,0 +1,141 @@
+"use client";
+
+import { Clipboard } from "lucide-react";
+import { type ReactNode, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useChatVisibility } from "@/hooks/use-chat-visibility";
+import { cn } from "@/lib/utils";
+import {
+  CheckCircleFillIcon,
+  ChevronDownIcon,
+  GlobeIcon,
+  LockIcon,
+} from "./icons";
+import { toast } from "./toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+
+export type VisibilityType = "private" | "public";
+
+const visibilities: Array<{
+  id: VisibilityType;
+  label: string;
+  description: string;
+  icon: ReactNode;
+}> = [
+  {
+    id: "private",
+    label: "Private",
+    description: "Only you can access this chat",
+    icon: <LockIcon />,
+  },
+  {
+    id: "public",
+    label: "Public",
+    description: "Anyone with the link can access this chat",
+    icon: <GlobeIcon />,
+  },
+];
+
+export function VisibilitySelector({
+  chatId,
+  className,
+  selectedVisibilityType,
+}: {
+  chatId: string;
+  selectedVisibilityType: VisibilityType;
+} & React.ComponentProps<typeof Button>) {
+  const [open, setOpen] = useState(false);
+
+  const { visibilityType, setVisibilityType } = useChatVisibility({
+    chatId,
+    initialVisibilityType: selectedVisibilityType,
+  });
+
+  const selectedVisibility = useMemo(
+    () => visibilities.find((visibility) => visibility.id === visibilityType),
+    [visibilityType]
+  );
+
+  return (
+    <div className={cn("flex items-center gap-2", className)}>
+      <DropdownMenu onOpenChange={setOpen} open={open}>
+        <DropdownMenuTrigger
+          asChild
+          className={
+            "w-fit data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
+          }
+        >
+          <Button
+            className="hidden h-8 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 md:flex md:h-fit md:px-2"
+            data-testid="visibility-selector"
+            variant="outline"
+          >
+            {selectedVisibility?.icon}
+            <span className="md:sr-only">{selectedVisibility?.label}</span>
+            <ChevronDownIcon />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="start" className="min-w-[300px]">
+          {visibilities.map((visibility) => (
+            <DropdownMenuItem
+              className="group/item flex flex-row items-center justify-between gap-4"
+              data-active={visibility.id === visibilityType}
+              data-testid={`visibility-selector-item-${visibility.id}`}
+              key={visibility.id}
+              onSelect={() => {
+                setVisibilityType(visibility.id);
+                setOpen(false);
+              }}
+            >
+              <div className="flex flex-col items-start gap-1">
+                {visibility.label}
+                {visibility.description && (
+                  <div className="text-muted-foreground text-xs">
+                    {visibility.description}
+                  </div>
+                )}
+              </div>
+              <div className="text-foreground opacity-0 group-data-[active=true]/item:opacity-100 dark:text-foreground">
+                <CheckCircleFillIcon />
+              </div>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {visibilityType === "public" && (
+            <Button
+              className="h-8 md:h-fit"
+              onClick={() => {
+                const shareUrl = `${window.location.origin}/chat/${chatId}`;
+                navigator.clipboard
+                  .writeText(shareUrl)
+                  .then(() =>
+                    toast({ type: "success", description: "Link copied" })
+                  )
+                  .catch(() =>
+                    toast({ type: "error", description: "Copy failed" })
+                  );
+              }}
+              variant="outline"
+            >
+              <Clipboard className="h-4 w-4" />
+            </Button>
+          )}
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Shareable Link</p>
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  );
+}
