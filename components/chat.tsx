@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
 import { ChatHeader } from "@/components/chat-header";
+import { AuthDialog } from "@/components/auth-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,6 +68,8 @@ export function Chat({
     currentModelIdRef.current = currentModelId;
   }, [currentModelId]);
 
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+
   const {
     messages,
     setMessages,
@@ -111,10 +114,32 @@ export function Chat({
           error.message?.includes("AI Gateway requires a valid credit card")
         ) {
           setShowCreditCardAlert(true);
+        } else if (error.message?.includes("Guest usage limit reached")) {
+          toast({
+            type: "error",
+            description: "Guest usage limit reached. Please sign in.",
+          });
+          setIsAuthDialogOpen(true);
         } else {
           toast({
             type: "error",
             description: error.message,
+          });
+        }
+      } else {
+        // Handle generic errors or check for 403 if error object structure allows
+        // The fetchWithErrorHandlers throws ChatSDKError, so we should be covered.
+        // But let's be safe and check message content if it comes through differently
+        if (error.message?.includes("Guest usage limit reached")) {
+           toast({
+            type: "error",
+            description: "Guest usage limit reached. Please sign in.",
+          });
+           setIsAuthDialogOpen(true);
+        } else {
+           toast({
+            type: "error",
+            description: error.message || "An unexpected error occurred",
           });
         }
       }
@@ -228,6 +253,7 @@ export function Chat({
 
       <div className="-rotate-12 -left-5 absolute z-0 h-40 w-96 rounded-lg bg-orange-400/10 blur-3xl" />
       <div className="-translate-x-1/2 absolute bottom-0 left-1/2 z-0 h-76 w-[700px] rounded-full bg-linear-to-r from-orange-400/10 to-orange-600/10 blur-3xl" />
+      <AuthDialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen} />
     </>
   );
 }
