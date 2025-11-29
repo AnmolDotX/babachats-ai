@@ -2,7 +2,7 @@ import type { UseChatHelpers } from "@ai-sdk/react";
 import equal from "fast-deep-equal";
 import { AnimatePresence } from "framer-motion";
 import { ArrowDownIcon } from "lucide-react";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useMessages } from "@/hooks/use-messages";
 import type { Vote } from "@/lib/db/schema";
 import type { ChatMessage } from "@/lib/types";
@@ -46,6 +46,28 @@ function PureMessages({
 
   useDataStream();
 
+  const latestMessageRef = useRef<HTMLDivElement>(null);
+  const [scrolledMessageId, setScrolledMessageId] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (
+      status === "streaming" &&
+      lastMessage?.role === "assistant" &&
+      lastMessage.id !== scrolledMessageId
+    ) {
+      setScrolledMessageId(lastMessage.id);
+      requestAnimationFrame(() => {
+        latestMessageRef.current?.scrollIntoView({
+          block: "start",
+          behavior: "smooth",
+        });
+      });
+    }
+  }, [status, messages, scrolledMessageId]);
+
   useEffect(() => {
     if (status === "submitted") {
       requestAnimationFrame(() => {
@@ -71,25 +93,30 @@ function PureMessages({
           {messages.length === 0 && <Greeting />}
 
           {messages.map((message, index) => (
-            <PreviewMessage
-              chatId={chatId}
-              isLoading={
-                status === "streaming" && messages.length - 1 === index
-              }
-              isReadonly={isReadonly}
+            <div
               key={message.id}
-              message={message}
-              regenerate={regenerate}
-              requiresScrollPadding={
-                hasSentMessage && index === messages.length - 1
-              }
-              setMessages={setMessages}
-              vote={
-                votes
-                  ? votes.find((vote) => vote.messageId === message.id)
-                  : undefined
-              }
-            />
+              ref={index === messages.length - 1 ? latestMessageRef : null}
+              className="w-full"
+            >
+              <PreviewMessage
+                chatId={chatId}
+                isLoading={
+                  status === "streaming" && messages.length - 1 === index
+                }
+                isReadonly={isReadonly}
+                message={message}
+                regenerate={regenerate}
+                requiresScrollPadding={
+                  hasSentMessage && index === messages.length - 1
+                }
+                setMessages={setMessages}
+                vote={
+                  votes
+                    ? votes.find((vote) => vote.messageId === message.id)
+                    : undefined
+                }
+              />
+            </div>
           ))}
 
           <AnimatePresence mode="wait">

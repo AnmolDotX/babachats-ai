@@ -83,8 +83,20 @@ export const {
 
       return token;
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       if (session.user) {
+        // Verify user exists in DB to prevent FK violations with stale tokens
+        const users = await getUser(session.user.email);
+        const userExists = users.some((u) => u.id === token.id);
+
+        if (!userExists) {
+          // If user doesn't exist (e.g. DB reset), we shouldn't return a valid session
+          // This will force a re-login
+          // @ts-ignore
+          session.user = null;
+          return session;
+        }
+
         session.user.id = token.id;
         session.user.type = token.type;
       }

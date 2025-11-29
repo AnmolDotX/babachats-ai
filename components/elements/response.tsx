@@ -1,21 +1,55 @@
-"use client";
-
-import { type ComponentProps, memo } from "react";
-import { Streamdown } from "streamdown";
+import { memo } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
-
-type ResponseProps = ComponentProps<typeof Streamdown>;
+import { CodeBlock } from "./code-block";
 
 export const Response = memo(
-  ({ className, ...props }: ResponseProps) => (
-    <Streamdown
-      className={cn(
-        "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_code]:whitespace-pre-wrap [&_code]:break-words [&_pre]:max-w-full [&_pre]:overflow-x-auto",
-        className
-      )}
-      {...props}
-    />
-  ),
+  ({ children, className }: { children: string; className?: string }) => {
+    return (
+      <div
+        className={cn(
+          "prose dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:p-0 break-words",
+          className
+        )}
+      >
+        <ReactMarkdown
+          components={{
+            code({ node, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || "");
+              const isInline = !match && !String(children).includes("\n");
+
+              if (isInline) {
+                return (
+                  <code
+                    className={cn(
+                      "bg-muted px-1 py-0.5 rounded-sm font-mono text-sm",
+                      className
+                    )}
+                    {...props}
+                  >
+                    {children}
+                  </code>
+                );
+              }
+
+              return (
+                <CodeBlock
+                  key={Math.random()}
+                  language={(match && match[1]) || ""}
+                  code={String(children).replace(/\n$/, "")}
+                  {...props}
+                />
+              );
+            },
+          }}
+          remarkPlugins={[remarkGfm]}
+        >
+          {children}
+        </ReactMarkdown>
+      </div>
+    );
+  },
   (prevProps, nextProps) => prevProps.children === nextProps.children
 );
 

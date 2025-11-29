@@ -9,13 +9,13 @@ export type ChatModel = {
 export const chatModels: ChatModel[] = [
   {
     id: "chat-model",
-    name: "Gemini Pro",
-    description: "Google's Gemini 1.5 Pro model for advanced AI capabilities",
+    name: "Smart",
+    description: "For quick and simple tasks",
   },
   {
     id: "chat-model-reasoning",
-    name: "Gemini Reasoning",
+    name: "Reasoning",
     description:
-      "Gemini with chain-of-thought reasoning for complex problem solving",
+      "For complex maths, code and reasoning tasks",
   },
 ];

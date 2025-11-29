@@ -16,6 +16,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const fetcher = async (url: string) => {
+  console.log("url----", url);
+  
   const response = await fetch(url);
 
   if (!response.ok) {

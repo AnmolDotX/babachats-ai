@@ -99,8 +99,8 @@ export async function saveChat({
       title,
       visibility,
     });
-  } catch (_error) {
-    throw new ChatSDKError("bad_request:database", "Failed to save chat");
+  } catch (error: any) {
+    throw new ChatSDKError("bad_request:database", `Failed to save chat: ${error.message}`);
   }
 }
 
@@ -246,8 +246,8 @@ export async function getChatById({ id }: { id: string }) {
 export async function saveMessages({ messages }: { messages: DBMessage[] }) {
   try {
     return await db.insert(message).values(messages);
-  } catch (_error) {
-    throw new ChatSDKError("bad_request:database", "Failed to save messages");
+  } catch (error: any) {
+    throw new ChatSDKError("bad_request:database", `Failed to save messages: ${error.message}`);
   }
 }
 
@@ -566,10 +566,10 @@ export async function createStreamId({
     await db
       .insert(stream)
       .values({ id: streamId, chatId, createdAt: new Date() });
-  } catch (_error) {
+  } catch (error: any) {
     throw new ChatSDKError(
       "bad_request:database",
-      "Failed to create stream id"
+      `Failed to create stream id: ${error.message}`
     );
   }
 }

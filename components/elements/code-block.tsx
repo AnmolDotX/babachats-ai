@@ -1,6 +1,4 @@
-"use client";
-
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { CheckIcon, CopyIcon, DownloadIcon } from "lucide-react";
 import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
 import { createContext, useContext, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -13,10 +11,12 @@ import { cn } from "@/lib/utils";
 
 type CodeBlockContextType = {
   code: string;
+  language: string;
 };
 
 const CodeBlockContext = createContext<CodeBlockContextType>({
   code: "",
+  language: "text",
 });
 
 export type CodeBlockProps = HTMLAttributes<HTMLDivElement> & {
@@ -34,7 +34,7 @@ export const CodeBlock = ({
   children,
   ...props
 }: CodeBlockProps) => (
-  <CodeBlockContext.Provider value={{ code }}>
+  <CodeBlockContext.Provider value={{ code, language }}>
     <div
       className={cn(
         "relative w-full overflow-hidden rounded-md border bg-background text-foreground",
@@ -95,11 +95,11 @@ export const CodeBlock = ({
         >
           {code}
         </SyntaxHighlighter>
-        {children && (
-          <div className="absolute top-2 right-2 flex items-center gap-2">
-            {children}
-          </div>
-        )}
+        <div className="absolute top-2 right-2 flex items-center gap-2">
+          <CodeBlockDownloadButton />
+          <CodeBlockCopyButton />
+          {children}
+        </div>
       </div>
     </div>
   </CodeBlockContext.Provider>
@@ -149,6 +149,69 @@ export const CodeBlockCopyButton = ({
       {...props}
     >
       {children ?? <Icon size={14} />}
+    </Button>
+  );
+};
+
+const languageExtensionMap: Record<string, string> = {
+  javascript: "js",
+  typescript: "ts",
+  python: "py",
+  java: "java",
+  c: "c",
+  cpp: "cpp",
+  csharp: "cs",
+  go: "go",
+  rust: "rs",
+  php: "php",
+  ruby: "rb",
+  swift: "swift",
+  kotlin: "kt",
+  scala: "scala",
+  html: "html",
+  css: "css",
+  scss: "scss",
+  less: "less",
+  json: "json",
+  xml: "xml",
+  yaml: "yaml",
+  markdown: "md",
+  sql: "sql",
+  shell: "sh",
+  bash: "sh",
+  powershell: "ps1",
+  dockerfile: "dockerfile",
+  plaintext: "txt",
+};
+
+export const CodeBlockDownloadButton = ({
+  className,
+  ...props
+}: ComponentProps<typeof Button>) => {
+  const { code, language } = useContext(CodeBlockContext);
+
+  const downloadCode = () => {
+    const extension = languageExtensionMap[language] || "txt";
+    const blob = new Blob([code], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = `code.${extension}`;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <Button
+      className={cn("shrink-0", className)}
+      onClick={downloadCode}
+      size="icon"
+      variant="ghost"
+      {...props}
+    >
+      <DownloadIcon size={14} />
     </Button>
   );
 };

@@ -12,7 +12,7 @@
 
 /* define design tokens (light mode) */
 :root {
-  --background: hsla(25, 100%, 83%, 0.086);
+  --background: hsl(25, 100%, 95%);
   --foreground: hsl(27, 91%, 25%);
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(24 15% 10%);
@@ -36,7 +36,7 @@
   --chart-3: hsl(14 90% 55%);
   --chart-4: hsl(48 100% 45%);
   --chart-5: hsl(10 80% 45%);
-  --sidebar-background: hsl(48 100% 97%);
+  --sidebar-background: hsl(27, 100%, 94%);
   --sidebar-foreground: hsl(23, 66%, 29%);
   --sidebar-primary: hsl(28 90% 55%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
@@ -46,7 +46,7 @@
   --sidebar-ring: hsl(28 90% 45%);
   /* border radius unit */
   --radius: 0.5rem;
-  --sidebar: oklch(87.005% 0.08293 56.882 / 0.248);
+  --sidebar: hsl(24, 100%, 94%);
 }
 
 /* define design tokens (dark mode) */

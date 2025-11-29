@@ -26,7 +26,6 @@ import { myProvider } from "@/lib/ai/providers";
 import type { Attachment, ChatMessage } from "@/lib/types";
 import type { AppUsage } from "@/lib/usage";
 import { cn } from "@/lib/utils";
-import { Context } from "./elements/context";
 import {
   PromptInput,
   PromptInputModelSelect,
@@ -205,12 +204,7 @@ function PureMultimodalInput({
     return myProvider.languageModel(selectedModelId);
   }, [selectedModelId]);
 
-  const contextProps = useMemo(
-    () => ({
-      usage,
-    }),
-    [usage]
-  );
+
 
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -263,7 +257,7 @@ function PureMultimodalInput({
         className="rounded-xl rounded-b-none border border-border border-b-0 bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
         onSubmit={(event) => {
           event.preventDefault();
-          if (status !== "ready") {
+          if (status !== "ready" && status !== "error") {
             toast.error("Please wait for the model to finish its response!");
           } else {
             submitForm();
@@ -316,10 +310,9 @@ function PureMultimodalInput({
             ref={textareaRef}
             rows={1}
             value={input}
-          />{" "}
-          <Context {...contextProps} />
+          />
         </div>
-        <PromptInputToolbar className="!border-top-0 border-t-0! p-0 shadow-none dark:border-0 dark:border-transparent!">
+        <PromptInputToolbar className="border-t-0! p-0 shadow-none dark:border-0 dark:border-transparent!">
           <PromptInputTools className="gap-0 sm:gap-0.5">
             <AttachmentsButton
               fileInputRef={fileInputRef}
