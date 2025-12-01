@@ -108,18 +108,25 @@ export function Chat({
       mutate(unstable_serialize(getChatHistoryPaginationKey));
     },
     onError: (error) => {
+      console.log(error, "----err---");
+      
       if (error instanceof ChatSDKError) {
         // Check if it's a credit card error
         if (
           error.message?.includes("AI Gateway requires a valid credit card")
         ) {
           setShowCreditCardAlert(true);
-        } else if (error.message?.includes("Guest usage limit reached")) {
+        } else if (
+          error.message === "Guest usage limit reached. Please sign in." ||
+          error.message?.includes("Guest usage limit reached")
+        ) {
           toast({
             type: "error",
             description: "Guest usage limit reached. Please sign in.",
           });
-          setIsAuthDialogOpen(true);
+          setTimeout(() => {
+            setIsAuthDialogOpen(true);
+          }, 0);
         } else {
           toast({
             type: "error",
@@ -130,12 +137,17 @@ export function Chat({
         // Handle generic errors or check for 403 if error object structure allows
         // The fetchWithErrorHandlers throws ChatSDKError, so we should be covered.
         // But let's be safe and check message content if it comes through differently
-        if (error.message?.includes("Guest usage limit reached")) {
+        if (
+          error.message === "Guest usage limit reached. Please sign in." ||
+          error.message?.includes("Guest usage limit reached")
+        ) {
            toast({
             type: "error",
             description: "Guest usage limit reached. Please sign in.",
           });
-           setIsAuthDialogOpen(true);
+           setTimeout(() => {
+             setIsAuthDialogOpen(true);
+           }, 0);
         } else {
            toast({
             type: "error",

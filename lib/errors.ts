@@ -18,7 +18,7 @@ export type Surface =
   | "suggestions"
   | "activate_gateway";
 
-export type ErrorCode = `${ErrorType}:${Surface}`;
+export type ErrorCode = `${ErrorType}:${Surface}` | "forbidden:guest_limit";
 
 export type ErrorVisibility = "response" | "log" | "none";
 
@@ -98,6 +98,8 @@ export function getMessageByErrorCode(errorCode: ErrorCode): string {
       return "The requested chat was not found. Please check the chat ID and try again.";
     case "forbidden:chat":
       return "This chat belongs to another user. Please check the chat ID and try again.";
+    case "forbidden:guest_limit":
+      return "Guest usage limit reached. Please sign in.";
     case "unauthorized:chat":
       return "You need to sign in to view this chat. Please sign in and try again.";
     case "offline:chat":
