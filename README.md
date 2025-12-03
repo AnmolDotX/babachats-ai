@@ -1,6 +1,6 @@
 # BabaChats AI 🕉️
 
-![BabaChats AI Hero](./public/hero.png)
+![BabaChats AI Hero](./public/hero-light.png)
 
 **BabaChats AI** is a spiritual AI companion designed to guide seekers on their journey of wisdom and enlightenment. Unlike standard AI assistants, BabaChats is tuned to provide thoughtful, culturally resonant, and spiritually grounded responses, helping users explore the depths of their consciousness.
 
