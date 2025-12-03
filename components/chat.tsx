@@ -8,6 +8,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
 import { ChatHeader } from "@/components/chat-header";
 import { AuthDialog } from "@/components/auth-dialog";
+import { PricingDialog } from "@/components/pricing-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -69,6 +70,7 @@ export function Chat({
   }, [currentModelId]);
 
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  const [isPricingDialogOpen, setIsPricingDialogOpen] = useState(false);
 
   const {
     messages,
@@ -109,7 +111,7 @@ export function Chat({
     },
     onError: (error) => {
       console.log(error, "----err---");
-      
+
       if (error instanceof ChatSDKError) {
         // Check if it's a credit card error
         if (
@@ -118,7 +120,9 @@ export function Chat({
           setShowCreditCardAlert(true);
         } else if (
           error.message === "Guest usage limit reached. Please sign in." ||
-          error.message?.includes("Guest usage limit reached")
+          error.message?.includes("Guest usage limit reached") ||
+          error.message ===
+            "Guest usage limit reached. Please sign in to continue."
         ) {
           toast({
             type: "error",
@@ -126,6 +130,17 @@ export function Chat({
           });
           setTimeout(() => {
             setIsAuthDialogOpen(true);
+          }, 0);
+        } else if (
+          error.message ===
+          "You have exceeded your daily limit. Upgrade to continue."
+        ) {
+          toast({
+            type: "error",
+            description: "Daily limit reached.",
+          });
+          setTimeout(() => {
+            setIsPricingDialogOpen(true);
           }, 0);
         } else {
           toast({
@@ -139,17 +154,30 @@ export function Chat({
         // But let's be safe and check message content if it comes through differently
         if (
           error.message === "Guest usage limit reached. Please sign in." ||
-          error.message?.includes("Guest usage limit reached")
+          error.message?.includes("Guest usage limit reached") ||
+          error.message ===
+            "Guest usage limit reached. Please sign in to continue."
         ) {
-           toast({
+          toast({
             type: "error",
             description: "Guest usage limit reached. Please sign in.",
           });
-           setTimeout(() => {
-             setIsAuthDialogOpen(true);
-           }, 0);
+          setTimeout(() => {
+            setIsAuthDialogOpen(true);
+          }, 0);
+        } else if (
+          error.message ===
+          "You have exceeded your daily limit. Upgrade to continue."
+        ) {
+          toast({
+            type: "error",
+            description: "Daily limit reached.",
+          });
+          setTimeout(() => {
+            setIsPricingDialogOpen(true);
+          }, 0);
         } else {
-           toast({
+          toast({
             type: "error",
             description: error.message || "An unexpected error occurred",
           });
@@ -266,6 +294,10 @@ export function Chat({
       <div className="-rotate-12 -left-5 absolute z-0 h-40 w-96 rounded-lg bg-orange-400/10 blur-3xl" />
       <div className="-translate-x-1/2 absolute bottom-0 left-1/2 z-0 h-76 w-[700px] rounded-full bg-linear-to-r from-orange-400/10 to-orange-600/10 blur-3xl" />
       <AuthDialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen} />
+      <PricingDialog
+        open={isPricingDialogOpen}
+        onOpenChange={setIsPricingDialogOpen}
+      />
     </>
   );
 }

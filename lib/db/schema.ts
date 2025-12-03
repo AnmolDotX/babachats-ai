@@ -10,6 +10,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  integer,
 } from "drizzle-orm/pg-core";
 import type { AppUsage } from "../usage";
 
@@ -171,3 +172,8 @@ export const stream = pgTable(
 );
 
 export type Stream = InferSelectModel<typeof stream>;
+export const guestRateLimits = pgTable("guest_rate_limits", {
+  ip: varchar("ip", { length: 255 }).primaryKey(),
+  count: integer("count").notNull().default(0),
+  lastUpdated: timestamp("last_updated").notNull().defaultNow(),
+});

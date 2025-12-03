@@ -18,7 +18,11 @@ export type Surface =
   | "suggestions"
   | "activate_gateway";
 
-export type ErrorCode = `${ErrorType}:${Surface}` | "forbidden:guest_limit";
+export type ErrorCode =
+  | `${ErrorType}:${Surface}`
+  | "forbidden:guest_limit"
+  | "rate_limit:guest"
+  | "rate_limit:regular";
 
 export type ErrorVisibility = "response" | "log" | "none";
 
@@ -94,6 +98,10 @@ export function getMessageByErrorCode(errorCode: ErrorCode): string {
 
     case "rate_limit:chat":
       return "You have exceeded your maximum number of messages for the day. Please try again later.";
+    case "rate_limit:guest":
+      return "Guest usage limit reached. Please sign in to continue.";
+    case "rate_limit:regular":
+      return "You have exceeded your daily limit. Upgrade to continue.";
     case "not_found:chat":
       return "The requested chat was not found. Please check the chat ID and try again.";
     case "forbidden:chat":

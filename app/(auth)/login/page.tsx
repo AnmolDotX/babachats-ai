@@ -9,6 +9,7 @@ import { AuthForm } from "@/components/auth-form";
 import { SubmitButton } from "@/components/submit-button";
 import { toast } from "@/components/toast";
 import { type LoginActionState, login } from "../actions";
+import {motion} from "framer-motion"
 
 export default function Page() {
   const router = useRouter();
@@ -50,20 +51,22 @@ export default function Page() {
   };
 
   return (
-    <div className="flex h-dvh w-screen items-start justify-center bg-background pt-12 md:items-center md:pt-0">
-      <div className="flex w-full max-w-md flex-col gap-12 overflow-hidden rounded-2xl border py-8">
-        <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="font-semibold text-xl dark:text-zinc-50">Sign In</h3>
-          <p className="text-gray-500 text-sm dark:text-zinc-400">
-            Use your email and password to sign in
+
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="flex flex-col gap-6">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <h3 className="font-semibold text-2xl tracking-tight text-orange-950 dark:text-orange-50">
+            Welcome Back
+          </h3>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            Enter your email to sign in to your account
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
           <SubmitButton isSuccessful={isSuccessful}>Sign in</SubmitButton>
-          <p className="mt-4 text-center text-gray-600 text-sm dark:text-zinc-400">
+          <p className="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
             {"Don't have an account? "}
             <Link
-              className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+              className="font-medium text-orange-600 hover:text-orange-500 hover:underline dark:text-orange-400"
               href="/register"
             >
               Sign up
@@ -71,7 +74,7 @@ export default function Page() {
             {" for free."}
           </p>
         </AuthForm>
-      </div>
-    </div>
+      </motion.div>
+
   );
 }

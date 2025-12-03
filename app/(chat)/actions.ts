@@ -8,6 +8,7 @@ import {
   deleteMessagesByChatIdAfterTimestamp,
   getMessageById,
   updateChatVisiblityById,
+  updateChatTitleById,
 } from "@/lib/db/queries";
 
 export async function saveChatModelAsCookie(model: string) {
@@ -61,4 +62,20 @@ export async function updateChatVisibility({
   }
 
   await updateChatVisiblityById({ chatId, visibility });
+}
+
+export async function updateChatTitle({
+  chatId,
+  title,
+}: {
+  chatId: string;
+  title: string;
+}) {
+  const session = await auth();
+
+  if (!session || !session.user) {
+    throw new Error("Unauthorized");
+  }
+
+  await updateChatTitleById({ chatId, title });
 }

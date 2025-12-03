@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { memo } from "react";
+import { useState, useEffect, memo } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { updateChatTitle } from "@/app/(chat)/actions";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
 import type { Chat } from "@/lib/db/schema";
 import {
@@ -7,6 +10,7 @@ import {
   GlobeIcon,
   LockIcon,
   MoreHorizontalIcon,
+  PencilEditIcon,
   ShareIcon,
   TrashIcon,
 } from "./icons";
@@ -42,12 +46,61 @@ const PureChatItem = ({
     initialVisibilityType: chat.visibility,
   });
 
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [title, setTitle] = useState(chat.title);
+  const router = useRouter();
+
+  useEffect(() => {
+    setTitle(chat.title);
+  }, [chat.title]);
+
+  const handleRename = async () => {
+    if (title.trim() === "") {
+      setTitle(chat.title);
+      setIsRenaming(false);
+      return;
+    }
+
+    try {
+      await updateChatTitle({ chatId: chat.id, title });
+      setIsRenaming(false);
+      router.refresh();
+    } catch (error) {
+      toast.error("Failed to rename chat");
+      setTitle(chat.title);
+      setIsRenaming(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleRename();
+    } else if (e.key === "Escape") {
+      setTitle(chat.title);
+      setIsRenaming(false);
+    }
+  };
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={isActive}>
-        <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
-          <span>{chat.title}</span>
-        </Link>
+        {isRenaming ? (
+          <div className="flex w-full items-center p-0">
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={handleRename}
+              autoFocus
+              className="w-full bg-transparent px-2 py-1 text-sm outline-none focus:ring-0"
+            />
+          </div>
+        ) : (
+          <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
+            <span>{title}</span>
+          </Link>
+        )}
       </SidebarMenuButton>
 
       <DropdownMenu modal={true}>
@@ -62,6 +115,13 @@ const PureChatItem = ({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" side="bottom">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onSelect={() => setIsRenaming(true)}
+          >
+            <PencilEditIcon className="mr-2 h-4 w-4" />
+            <span>Rename</span>
+          </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="cursor-pointer">
               <ShareIcon />

@@ -31,6 +31,7 @@ import {
   type User,
   user,
   vote,
+  guestRateLimits,
 } from "./schema";
 import { generateHashedPassword } from "./utils";
 
@@ -502,6 +503,23 @@ export async function updateChatVisiblityById({
   }
 }
 
+export async function updateChatTitleById({
+  chatId,
+  title,
+}: {
+  chatId: string;
+  title: string;
+}) {
+  try {
+    return await db.update(chat).set({ title }).where(eq(chat.id, chatId));
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to update chat title by id"
+    );
+  }
+}
+
 export async function updateChatLastContextById({
   chatId,
   context,
@@ -589,5 +607,58 @@ export async function getStreamIdsByChatId({ chatId }: { chatId: string }) {
       "bad_request:database",
       "Failed to get stream ids by chat id"
     );
+  }
+}
+
+export async function getGuestMessageCount(ip: string) {
+  try {
+    const [record] = await db
+      .select()
+      .from(guestRateLimits)
+      .where(eq(guestRateLimits.ip, ip));
+
+    if (!record) return 0;
+
+    // Check if the record is from today (last 24 hours)
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    if (record.lastUpdated < oneDayAgo) {
+      return 0;
+    }
+
+    return record.count;
+  } catch (_error) {
+    console.error("Failed to get guest message count", _error);
+    return 0; // Fail open if DB error
+  }
+}
+
+export async function incrementGuestMessageCount(ip: string) {
+  try {
+    const [record] = await db
+      .select()
+      .from(guestRateLimits)
+      .where(eq(guestRateLimits.ip, ip));
+
+    if (record) {
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      if (record.lastUpdated < oneDayAgo) {
+        // Reset if older than 24 hours
+        await db
+          .update(guestRateLimits)
+          .set({ count: 1, lastUpdated: new Date() })
+          .where(eq(guestRateLimits.ip, ip));
+      } else {
+        // Increment
+        await db
+          .update(guestRateLimits)
+          .set({ count: record.count + 1, lastUpdated: new Date() })
+          .where(eq(guestRateLimits.ip, ip));
+      }
+    } else {
+      // Create new
+      await db.insert(guestRateLimits).values({ ip, count: 1 });
+    }
+  } catch (_error) {
+    console.error("Failed to increment guest message count", _error);
   }
 }

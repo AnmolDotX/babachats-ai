@@ -28,6 +28,8 @@ import {
   deleteChatById,
   getChatById,
   getMessageCountByUserId,
+  getGuestMessageCount,
+  incrementGuestMessageCount,
   getMessagesByChatId,
   saveChat,
   saveMessages,
@@ -111,13 +113,26 @@ export async function POST(request: Request) {
 
     const userType: UserType = session.user.type;
 
-    const messageCount = await getMessageCountByUserId({
-      id: session.user.id,
-      differenceInHours: 24,
-    });
+    if (userType === "guest") {
+      const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+      const guestMessageCount = await getGuestMessageCount(ip);
+      
+      console.log("DEBUG: Guest Rate Limit Check", { ip, guestMessageCount, limit: entitlementsByUserType[userType].maxMessagesPerDay });
 
-    if (messageCount > entitlementsByUserType[userType].maxMessagesPerDay) {
-      return new ChatSDKError("rate_limit:chat").toResponse();
+      if (guestMessageCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+        console.log("DEBUG: Limit Reached");
+        return new ChatSDKError("rate_limit:guest").toResponse();
+      }
+      await incrementGuestMessageCount(ip);
+    } else {
+      const messageCount = await getMessageCountByUserId({
+        id: session.user.id,
+        differenceInHours: 24,
+      });
+
+      if (messageCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+        return new ChatSDKError("rate_limit:regular").toResponse();
+      }
     }
 
     const chat = await getChatById({ id });

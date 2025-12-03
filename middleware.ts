@@ -28,27 +28,7 @@ export async function middleware(request: NextRequest) {
   // Track guest usage
   if (isGuest) {
     if (request.method === "POST" && pathname.startsWith("/api/chat")) {
-      const guestUsage = request.cookies.get("guest-usage");
-      const usageCount = guestUsage ? parseInt(guestUsage.value, 10) : 0;
-
-      if (usageCount >= 5) {
-        return NextResponse.json(
-          {
-            code: "forbidden:guest_limit",
-            message: "Guest usage limit reached. Please sign in.",
-          },
-          { status: 403 }
-        );
-      }
-
-      const response = NextResponse.next();
-      response.cookies.set("guest-usage", (usageCount + 1).toString(), {
-        httpOnly: true,
-        secure: isProductionEnvironment,
-        sameSite: "lax",
-        path: "/",
-      });
-      return response;
+      return NextResponse.next();
     }
 
     if (request.method !== "GET" && pathname.startsWith("/api/chat")) {
@@ -60,7 +40,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (token && !isGuest && ["/login", "/register"].includes(pathname)) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/chat", request.url));
   }
 
   return NextResponse.next();
