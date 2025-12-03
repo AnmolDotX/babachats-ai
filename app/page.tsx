@@ -22,7 +22,7 @@ export default async function LandingPage() {
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400">
           Chat with Your <br className="hidden md:block" />
           <FlipWords
-            className="text-7xl tracking-tight font-extrabold "
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight font-extrabold "
             words={[
               "Spiritual AI",
               "Blunt Oracle",
@@ -68,7 +68,6 @@ export default async function LandingPage() {
           </Link>
         </div>
 
-        {/* Hero Image / Mockup */}
         <HeroImage />
       </main>
 

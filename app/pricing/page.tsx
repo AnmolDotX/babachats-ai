@@ -21,7 +21,7 @@ export default function PricingPage() {
 
         <div className="grid w-full gap-8 md:grid-cols-2 lg:max-w-4xl">
           {/* Free Plan */}
-          <div className="relative flex flex-col rounded-2xl border border-orange-200 bg-white/50 p-8 shadow-xl backdrop-blur-sm transition-transform hover:scale-105 dark:border-orange-800 dark:bg-zinc-900/50">
+          <div className="relative flex flex-col rounded-2xl border border-orange-200 bg-white/50 p-8 shadow-xl backdrop-blur-sm transition-transform hover:scale-[1.01] duration-300 ease-in-out dark:border-orange-800 dark:bg-zinc-900/50">
             <div className="mb-4 text-left">
               <h3 className="font-bold font-serif text-2xl">Seeker</h3>
               <p className="text-orange-800/60 text-sm dark:text-orange-200/60">
@@ -29,7 +29,7 @@ export default function PricingPage() {
               </p>
             </div>
             <div className="mb-8 text-left">
-              <span className="font-bold text-4xl">$0</span>
+              <span className="font-bold text-4xl">₹0</span>
               <span className="text-orange-800/60 dark:text-orange-200/60">
                 /month
               </span>
@@ -57,9 +57,9 @@ export default function PricingPage() {
           </div>
 
           {/* Pro Plan */}
-          <div className="relative flex flex-col rounded-2xl border-2 border-orange-500 bg-white/80 p-8 shadow-2xl backdrop-blur-md transition-transform hover:scale-105 dark:bg-zinc-900/80">
+          <div className="relative flex flex-col rounded-2xl border-2 border-orange-500 bg-white/80 p-8 shadow-2xl backdrop-blur-md transition-transform hover:scale-[1.01] dark:bg-zinc-900/80 duration-300 ease-in-out">
             <div className="-top-4 -translate-x-1/2 absolute left-1/2 rounded-full bg-orange-600 px-4 py-1 font-medium text-sm text-white shadow-lg">
-              Most Popular
+              Recommended
             </div>
             <div className="mb-4 text-left">
               <h3 className="font-bold font-serif text-2xl text-orange-600 dark:text-orange-400">
@@ -70,7 +70,7 @@ export default function PricingPage() {
               </p>
             </div>
             <div className="mb-8 text-left">
-              <span className="font-bold text-4xl">$9.99</span>
+              <span className="font-bold text-4xl">₹499</span>
               <span className="text-orange-800/60 dark:text-orange-200/60">
                 /month
               </span>

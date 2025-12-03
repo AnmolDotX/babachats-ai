@@ -15,6 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface AppBarProps {
   user?: User;
@@ -92,6 +93,7 @@ export function AppBar({ user }: AppBarProps) {
               </Link>
             </>
           )}
+          <ThemeToggle />
         </div>
 
         {/* Mobile Menu */}
@@ -177,6 +179,9 @@ export function AppBar({ user }: AppBarProps) {
                       </Link>
                     </>
                   )}
+                  <div className="flex justify-center mt-4">
+                    <ThemeToggle />
+                  </div>
                 </div>
               </div>
             </SheetContent>
