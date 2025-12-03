@@ -10,10 +10,13 @@ export default function PricingPage() {
       </div>
 
       <main className="relative z-10 flex w-full max-w-6xl flex-col items-center px-4 py-16 text-center md:py-24">
-        <h1 className="mb-4 font-bold font-serif text-4xl tracking-tight md:text-6xl">
-          Invest in Your Spiritual Journey
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400">
+          Friendly Plans{" "}
+          <span className="font-serif italic text-orange-600 dark:text-orange-500">
+            For seekers
+          </span>
         </h1>
-        <p className="mb-12 max-w-2xl text-lg text-orange-800/80 md:text-xl dark:text-orange-200/80">
+        <p className="mb-12 max-w-2xl text-base text-orange-800/80 md:text-lg dark:text-orange-200/80">
           Choose a path that aligns with your quest for wisdom. Our plans are
           designed for individual seekers, keeping the energy pure and
           accessible.

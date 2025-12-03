@@ -11,7 +11,7 @@ export default function AboutPage() {
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_800px_at_50%_200px,#fb923c1a,transparent)]"></div>
 
       <main className="relative z-10 pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto flex flex-col items-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400 text-center">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-8 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400 text-center">
           About
           <span className="font-serif italic text-orange-600 dark:text-orange-500">
             {" "}
@@ -20,7 +20,7 @@ export default function AboutPage() {
         </h1>
 
         <div className="prose prose-orange dark:prose-invert prose-lg text-center mb-8">
-          <p className="text-lg text-orange-800/80 dark:text-orange-200/80 leading-relaxed">
+          <p className="text-base md:text-lg text-orange-800/80 dark:text-orange-200/80 leading-relaxed">
             BabaChats AI is an experiment in fusing ancient wisdom with modern
             intelligence. We believe that technology, when guided by dharma, can
             be a powerful tool for self-reflection and growth.

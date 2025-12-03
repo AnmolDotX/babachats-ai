@@ -11,14 +11,14 @@ export default function ContactPage() {
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_800px_at_50%_200px,#fb923c1a,transparent)]"></div>
 
       <main className="relative z-10 pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto flex flex-col items-center text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400">
           Connect with the{" "}
           <span className="font-serif italic text-orange-600 dark:text-orange-500">
             Source
           </span>
         </h1>
 
-        <p className="text-xl text-orange-800/80 dark:text-orange-200/80 mb-12 max-w-lg">
+        <p className="text-base md:text-lg text-orange-800/80 dark:text-orange-200/80 mb-12 max-w-lg">
           Have questions, feedback, or just want to share your journey? We are
           always listening.
         </p>

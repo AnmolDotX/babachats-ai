@@ -34,7 +34,7 @@ export default async function LandingPage() {
           />
         </h1>
 
-        <p className="max-w-2xl text-lg md:text-xl text-orange-800/80 dark:text-orange-200/80 mb-10 leading-relaxed">
+        <p className="max-w-2xl text-base md:text-lg text-orange-800/80 dark:text-orange-200/80 mb-10 leading-relaxed">
           Beyond illusions, find your truth. A mirror for the soul, reflecting
           wisdom and insight to guide your journey through life's complexities.
           Discover profound understanding and clarity within.
