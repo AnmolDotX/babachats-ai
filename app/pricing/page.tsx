@@ -1,4 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pricing Plans",
+  description:
+    "Choose a plan for your spiritual journey. Friendly pricing for seekers, including a free tier to start your path to wisdom.",
+};
 
 export default function PricingPage() {
   return (

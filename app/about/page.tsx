@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about BabaChats AI, an experiment in fusing ancient spiritual wisdom with modern artificial intelligence for deep self-reflection.",
+};
+
 export default function AboutPage() {
   return (
     <div className="relative min-h-screen bg-orange-50 dark:bg-slate-950 text-orange-950 dark:text-orange-50 overflow-hidden font-sans selection:bg-orange-200 dark:selection:bg-orange-900">

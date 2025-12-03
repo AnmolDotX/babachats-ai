@@ -1,7 +1,13 @@
 import { FlipWords } from "@/components/ui/flip-words";
 import { HeroImage } from "@/components/hero-image";
-import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "BabaChats AI - Spiritual AI Chatbot & Blunt Advice",
+  description:
+    "Seek the truth with BabaChats AI. A spiritual companion offering blunt, raw wisdom and guidance for self-discovery and enlightenment.",
+};
 
 export default async function LandingPage() {
   return (

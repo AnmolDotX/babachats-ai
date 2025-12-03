@@ -1,6 +1,14 @@
 import { Mail, Twitter } from "lucide-react";
 import Link from "next/link";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description:
+    "Connect with the source. Reach out to BabaChats AI for feedback, questions, or to share your spiritual journey.",
+};
+
 export default function ContactPage() {
   return (
     <div className="relative min-h-screen bg-orange-50 dark:bg-slate-950 text-orange-950 dark:text-orange-50 overflow-hidden font-sans selection:bg-orange-200 dark:selection:bg-orange-900">

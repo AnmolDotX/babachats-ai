@@ -9,9 +9,37 @@ import { auth } from "./(auth)/auth";
 import { AppBar } from "@/components/app-bar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://desichat.babacreates.in"),
-  title: "Baba Creates AI",
-  description: "Advance AI chatbot built on top of vercel chatbot template",
+  metadataBase: new URL("https://chat.babacreates.in"),
+  title: {
+    default: "BabaChats AI - Your Blunt Spiritual Companion",
+    template: "%s | BabaChats AI",
+  },
+  description:
+    "Chat with a spiritual AI that offers blunt, raw truth and guidance for your journey. A mirror for your soul.",
+  openGraph: {
+    title: "BabaChats AI - Your Blunt Spiritual Companion",
+    description:
+      "Chat with a spiritual AI that offers blunt, raw truth and guidance for your journey. A mirror for your soul.",
+    url: "https://chat.babacreates.in",
+    siteName: "BabaChats AI",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/hero.png",
+        width: 1200,
+        height: 630,
+        alt: "BabaChats AI Hero Image",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BabaChats AI - Your Blunt Spiritual Companion",
+    description:
+      "Chat with a spiritual AI that offers blunt, raw truth and guidance for your journey. A mirror for your soul.",
+    images: ["/hero.png"],
+  },
 };
 
 export const viewport = {
@@ -50,6 +78,26 @@ const THEME_COLOR_SCRIPT = `\
   updateThemeColor();
 })();`;
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "BabaChats AI",
+  url: "https://chat.babacreates.in",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://chat.babacreates.in/?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "BabaChats AI",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://chat.babacreates.in/icon.png",
+    },
+  },
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -73,6 +121,11 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: THEME_COLOR_SCRIPT,
           }}
+        />
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: "Required"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="antialiased">
