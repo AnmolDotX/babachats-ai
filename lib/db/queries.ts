@@ -24,6 +24,7 @@ import {
   chat,
   type DBMessage,
   document,
+  guestRateLimits,
   message,
   type Suggestion,
   stream,
@@ -31,7 +32,6 @@ import {
   type User,
   user,
   vote,
-  guestRateLimits,
 } from "./schema";
 import { generateHashedPassword } from "./utils";
 
@@ -101,7 +101,10 @@ export async function saveChat({
       visibility,
     });
   } catch (error: any) {
-    throw new ChatSDKError("bad_request:database", `Failed to save chat: ${error.message}`);
+    throw new ChatSDKError(
+      "bad_request:database",
+      `Failed to save chat: ${error.message}`
+    );
   }
 }
 
@@ -135,7 +138,7 @@ export async function deleteAllChatsByUserId({ userId }: { userId: string }) {
       return { deletedCount: 0 };
     }
 
-    const chatIds = userChats.map(c => c.id);
+    const chatIds = userChats.map((c) => c.id);
 
     await db.delete(vote).where(inArray(vote.chatId, chatIds));
     await db.delete(message).where(inArray(message.chatId, chatIds));
@@ -248,7 +251,10 @@ export async function saveMessages({ messages }: { messages: DBMessage[] }) {
   try {
     return await db.insert(message).values(messages);
   } catch (error: any) {
-    throw new ChatSDKError("bad_request:database", `Failed to save messages: ${error.message}`);
+    throw new ChatSDKError(
+      "bad_request:database",
+      `Failed to save messages: ${error.message}`
+    );
   }
 }
 

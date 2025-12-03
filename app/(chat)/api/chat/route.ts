@@ -27,10 +27,10 @@ import {
   createStreamId,
   deleteChatById,
   getChatById,
-  getMessageCountByUserId,
   getGuestMessageCount,
-  incrementGuestMessageCount,
+  getMessageCountByUserId,
   getMessagesByChatId,
+  incrementGuestMessageCount,
   saveChat,
   saveMessages,
   updateChatLastContextById,
@@ -116,10 +116,16 @@ export async function POST(request: Request) {
     if (userType === "guest") {
       const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
       const guestMessageCount = await getGuestMessageCount(ip);
-      
-      console.log("DEBUG: Guest Rate Limit Check", { ip, guestMessageCount, limit: entitlementsByUserType[userType].maxMessagesPerDay });
 
-      if (guestMessageCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+      console.log("DEBUG: Guest Rate Limit Check", {
+        ip,
+        guestMessageCount,
+        limit: entitlementsByUserType[userType].maxMessagesPerDay,
+      });
+
+      if (
+        guestMessageCount >= entitlementsByUserType[userType].maxMessagesPerDay
+      ) {
         console.log("DEBUG: Limit Reached");
         return new ChatSDKError("rate_limit:guest").toResponse();
       }

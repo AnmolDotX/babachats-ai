@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,18 +11,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useRouter } from "next/navigation";
 
-interface PricingDialogProps {
+type PricingDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
+};
 
 export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   const router = useRouter();
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog onOpenChange={onOpenChange} open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Expand Your Consciousness</AlertDialogTitle>
@@ -34,11 +34,11 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
         <AlertDialogFooter>
           <AlertDialogCancel>Maybe Later</AlertDialogCancel>
           <AlertDialogAction
+            className="bg-orange-600 text-white hover:bg-orange-700"
             onClick={() => {
               router.push("/pricing");
               onOpenChange(false);
             }}
-            className="bg-orange-600 hover:bg-orange-700 text-white"
           >
             Proceed Exploration
           </AlertDialogAction>

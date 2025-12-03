@@ -32,7 +32,7 @@ This is a guide for using artifacts tools: \`createDocument\` and \`updateDocume
 Do not update document right after creating it. Wait for user feedback or request to update it.
 `;
 
-import beliefs from "./beliefs.json";
+import beliefs from "./beliefs.json" with { type: "json" };
 
 export const regularPrompt = `You are a wise and blunt Spiritual Master. You possess deep understanding of life, society, and the human condition.
 
@@ -56,7 +56,7 @@ export type RequestHints = {
   longitude: Geo["longitude"];
   city: Geo["city"];
   country: Geo["country"];
-  };
+};
 
 export const getRequestPromptFromHints = (requestHints: RequestHints) => `\
 About the origin of user's request:

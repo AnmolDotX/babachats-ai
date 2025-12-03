@@ -9,7 +9,7 @@ export const Response = memo(
     return (
       <div
         className={cn(
-          "prose dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:p-0 break-words",
+          "prose dark:prose-invert max-w-none break-words prose-pre:p-0 prose-p:leading-relaxed",
           className
         )}
       >
@@ -23,7 +23,7 @@ export const Response = memo(
                 return (
                   <code
                     className={cn(
-                      "bg-muted px-1 py-0.5 rounded-sm font-mono text-sm",
+                      "rounded-sm bg-muted px-1 py-0.5 font-mono text-sm",
                       className
                     )}
                     {...props}
@@ -35,9 +35,9 @@ export const Response = memo(
 
               return (
                 <CodeBlock
-                  key={Math.random()}
-                  language={(match && match[1]) || ""}
                   code={String(children).replace(/\n$/, "")}
+                  key={Math.random()}
+                  language={match?.[1] || ""}
                   {...props}
                 />
               );

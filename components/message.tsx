@@ -77,7 +77,7 @@ const PurePreviewMessage = ({
             "gap-2 md:gap-4": message.parts?.some(
               (p) => p.type === "text" && p.text?.trim()
             ),
-            "min-h-96 ": message.role === "assistant" && requiresScrollPadding,
+            "min-h-96": message.role === "assistant" && requiresScrollPadding,
             "w-[95%]":
               (message.role === "assistant" &&
                 message.parts?.some(
@@ -90,7 +90,7 @@ const PurePreviewMessage = ({
         >
           {attachmentsFromMessage.length > 0 && (
             <div
-              className="flex flex-row justify-end gap-2 "
+              className="flex flex-row justify-end gap-2"
               data-testid={"message-attachments"}
             >
               {attachmentsFromMessage.map((attachment) => (
@@ -126,9 +126,9 @@ const PurePreviewMessage = ({
                   <div key={key}>
                     <MessageContent
                       className={cn({
-                        "w-fit  break-words rounded-2xl px-3 py-2 text-right font-medium text-base bg-[#ffe3ce] dark:bg-[#f97316] ":
+                        "w-fit break-words rounded-2xl bg-[#ffe3ce] px-3 py-2 text-right font-medium text-base dark:bg-[#f97316]":
                           message.role === "user",
-                        "bg-transparent px-0 py-0 text-left font-medium text-base  max-w-[95%]":
+                        "max-w-[95%] bg-transparent px-0 py-0 text-left font-medium text-base":
                           message.role === "assistant",
                       })}
                       data-testid="message-content"

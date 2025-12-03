@@ -52,7 +52,7 @@ function PureMessages({
   );
 
   useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
+    const lastMessage = messages.at(-1);
     if (
       status === "streaming" &&
       lastMessage?.role === "assistant" &&
@@ -94,9 +94,9 @@ function PureMessages({
 
           {messages.map((message, index) => (
             <div
+              className="w-full"
               key={message.id}
               ref={index === messages.length - 1 ? latestMessageRef : null}
-              className="w-full"
             >
               <PreviewMessage
                 chatId={chatId}

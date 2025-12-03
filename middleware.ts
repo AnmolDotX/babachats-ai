@@ -5,14 +5,6 @@ import { guestRegex, isProductionEnvironment } from "./lib/constants";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  /*
-   * Playwright starts the dev server and requires a 200 status to
-   * begin the tests, so this ensures that the tests can start
-   */
-  if (pathname.startsWith("/ping")) {
-    return new Response("pong", { status: 200 });
-  }
-
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
@@ -32,10 +24,10 @@ export async function middleware(request: NextRequest) {
     }
 
     if (request.method !== "GET" && pathname.startsWith("/api/chat")) {
-       // Allow POST /api/chat (message sending) for guests (up to limit), but block other mutations
-       if (request.method !== "POST") {
-         return new NextResponse("Unauthorized", { status: 401 });
-       }
+      // Allow POST /api/chat (message sending) for guests (up to limit), but block other mutations
+      if (request.method !== "POST") {
+        return new NextResponse("Unauthorized", { status: 401 });
+      }
     }
   }
 

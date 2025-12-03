@@ -1,14 +1,14 @@
 "use server";
-import { auth } from "@/app/(auth)/auth";
 import { generateText, type UIMessage } from "ai";
 import { cookies } from "next/headers";
+import { auth } from "@/app/(auth)/auth";
 import type { VisibilityType } from "@/components/visibility-selector";
 import { myProvider } from "@/lib/ai/providers";
 import {
   deleteMessagesByChatIdAfterTimestamp,
   getMessageById,
-  updateChatVisiblityById,
   updateChatTitleById,
+  updateChatVisiblityById,
 } from "@/lib/db/queries";
 
 export async function saveChatModelAsCookie(model: string) {

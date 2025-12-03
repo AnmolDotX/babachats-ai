@@ -13,16 +13,16 @@ export default async function LandingPage() {
         <div className="mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-orange-100 shadow-2xl ring-4 ring-orange-200 dark:bg-orange-900/20 dark:ring-orange-800">
           {/* Using the favicon we generated as the logo */}
           <Image
-            src="/icon.png"
             alt="BabaChats Guru"
-            width={96}
-            height={96}
             className="h-24 w-24 object-contain opacity-90"
+            height={96}
             priority
+            src="/icon.png"
+            width={96}
           />
         </div>
 
-        <h1 className="mb-4 font-mono text-5xl font-extrabold tracking-tight md:text-7xl">
+        <h1 className="mb-4 font-extrabold font-mono text-5xl tracking-tight md:text-7xl">
           BABA CHATS AI
         </h1>
 
@@ -33,8 +33,8 @@ export default async function LandingPage() {
 
         <div className="flex flex-col gap-4 sm:flex-row">
           <Link
-            href="/chat"
             className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-orange-600 px-8 py-3 font-medium text-white shadow-lg transition-all hover:bg-orange-700 hover:shadow-orange-500/25 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
+            href="/chat"
           >
             <span className="mr-2">Start Chatting</span>
             <svg
@@ -44,24 +44,24 @@ export default async function LandingPage() {
               viewBox="0 0 24 24"
             >
               <path
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
               />
             </svg>
           </Link>
 
           <Link
+            className="inline-flex items-center justify-center rounded-full border-2 border-orange-200 px-8 py-3 font-medium text-orange-800 transition-colors hover:bg-orange-100 hover:text-orange-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:border-orange-800 dark:text-orange-200 dark:focus:ring-offset-zinc-950 dark:hover:bg-orange-900/30"
             href="/login"
-            className="inline-flex items-center justify-center rounded-full border-2 border-orange-200 px-8 py-3 font-medium text-orange-800 transition-colors hover:bg-orange-100 hover:text-orange-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:border-orange-800 dark:text-orange-200 dark:hover:bg-orange-900/30 dark:focus:ring-offset-zinc-950"
           >
             Sign In
           </Link>
         </div>
       </main>
 
-      <footer className="absolute bottom-6 text-sm text-orange-800/40 dark:text-orange-200/40">
+      <footer className="absolute bottom-6 text-orange-800/40 text-sm dark:text-orange-200/40">
         © {new Date().getFullYear()} BabaChats AI. All rights reserved.
       </footer>
     </div>

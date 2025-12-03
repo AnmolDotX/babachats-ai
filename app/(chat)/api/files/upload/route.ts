@@ -91,7 +91,10 @@ export async function POST(request: Request) {
         contentType,
       });
     } catch (_error) {
-      return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to process request" },
+        { status: 500 }
+      );
     }
   } catch (_error) {
     return NextResponse.json(

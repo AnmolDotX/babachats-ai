@@ -16,26 +16,26 @@ export default function AuthLayout({
         <div className="absolute inset-0 overflow-hidden">
           <div className="-left-20 -top-20 h-96 w-96 rounded-full bg-orange-300/30 blur-3xl dark:bg-orange-500/20" />
           <div className="-bottom-20 -right-20 h-96 w-96 rounded-full bg-red-300/30 blur-3xl dark:bg-red-500/20" />
-          <div className="absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-200/20 blur-3xl dark:bg-orange-600/10" />
+          <div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[500px] w-[500px] rounded-full bg-orange-200/20 blur-3xl dark:bg-orange-600/10" />
         </div>
 
         <div className="relative z-10 flex flex-col items-center text-center">
           <div
-            className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-white/20 shadow-xl backdrop-blur-md ring-1 ring-white/50 dark:bg-black/20 dark:ring-white/10"
+            className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-white/20 shadow-xl ring-1 ring-white/50 backdrop-blur-md dark:bg-black/20 dark:ring-white/10"
             style={{ viewTransitionName: "auth-logo" } as React.CSSProperties}
           >
             <Image
-              src="/icon.png"
               alt="BabaChats Guru"
-              width={64}
-              height={64}
               className="h-16 w-16 object-contain opacity-90"
+              height={64}
               priority
+              src="/icon.png"
+              width={64}
             />
           </div>
           <Link
+            className="mb-2 font-extrabold font-mono text-4xl text-orange-950 transition-colors duration-300 ease-in-out hover:text-orange-600 dark:text-orange-50 dark:hover:text-orange-600"
             href={"/"}
-            className="mb-2 font-mono text-4xl font-extrabold hover:text-orange-600 dark:hover:text-orange-600 transition-colors duration-300 ease-in-out text-orange-950 dark:text-orange-50"
           >
             BABA CHATS AI
           </Link>
@@ -55,15 +55,15 @@ export default function AuthLayout({
           <div className="flex flex-col items-center text-center lg:hidden">
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/20">
               <Image
-                src="/icon.png"
                 alt="BabaChats Guru"
-                width={40}
-                height={40}
                 className="h-10 w-10 object-contain"
+                height={40}
                 priority
+                src="/icon.png"
+                width={40}
               />
             </div>
-            <h2 className="font-serif text-2xl font-bold text-orange-950 dark:text-orange-50">
+            <h2 className="font-bold font-serif text-2xl text-orange-950 dark:text-orange-50">
               BabaChats
             </h2>
           </div>

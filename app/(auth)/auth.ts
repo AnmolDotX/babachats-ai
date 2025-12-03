@@ -92,7 +92,7 @@ export const {
         if (!userExists) {
           // If user doesn't exist (e.g. DB reset), we shouldn't return a valid session
           // This will force a re-login
-          // @ts-ignore
+          // @ts-expect-error
           session.user = null;
           return session;
         }

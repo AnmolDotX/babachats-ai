@@ -11,7 +11,10 @@ export const entitlementsByUserType: Record<UserType, Entitlements> = {
    * For users without an account
    */
   guest: {
-    maxMessagesPerDay: parseInt(process.env.NEXT_PUBLIC_GUEST_MESSAGE_LIMIT ?? "5", 10),
+    maxMessagesPerDay: Number.parseInt(
+      process.env.NEXT_PUBLIC_GUEST_MESSAGE_LIMIT ?? "5",
+      10
+    ),
     availableChatModelIds: ["chat-model", "chat-model-reasoning"],
   },
 
@@ -19,7 +22,10 @@ export const entitlementsByUserType: Record<UserType, Entitlements> = {
    * For users with an account
    */
   regular: {
-    maxMessagesPerDay: parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT ?? "100", 10),
+    maxMessagesPerDay: Number.parseInt(
+      process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT ?? "100",
+      10
+    ),
     availableChatModelIds: ["chat-model", "chat-model-reasoning"],
   },
 

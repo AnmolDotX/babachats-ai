@@ -39,6 +39,13 @@ export function ModelSelector({
     <div className={cn("flex items-center gap-2", className)}>
       {availableChatModels.map((chatModel) => (
         <Button
+          className={cn(
+            "h-8 px-3 font-medium text-sm transition-colors",
+            optimisticModelId === chatModel.id
+              ? "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          )}
+          data-testid={`model-selector-${chatModel.id}`}
           key={chatModel.id}
           onClick={() => {
             startTransition(() => {
@@ -47,13 +54,6 @@ export function ModelSelector({
             });
           }}
           variant={optimisticModelId === chatModel.id ? "secondary" : "ghost"}
-          className={cn(
-            "h-8 px-3 text-sm font-medium transition-colors",
-            optimisticModelId === chatModel.id
-              ? "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-          )}
-          data-testid={`model-selector-${chatModel.id}`}
         >
           {chatModel.name}
         </Button>

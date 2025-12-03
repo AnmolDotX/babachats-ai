@@ -15,7 +15,6 @@ export const chatModels: ChatModel[] = [
   {
     id: "chat-model-reasoning",
     name: "Reasoning",
-    description:
-      "For complex maths, code and reasoning tasks",
+    description: "For complex maths, code and reasoning tasks",
   },
 ];

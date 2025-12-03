@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
-import { ChatHeader } from "@/components/chat-header";
 import { AuthDialog } from "@/components/auth-dialog";
+import { ChatHeader } from "@/components/chat-header";
 import { PricingDialog } from "@/components/pricing-dialog";
 import {
   AlertDialog,
@@ -293,10 +293,10 @@ export function Chat({
 
       <div className="-rotate-12 -left-5 absolute z-0 h-40 w-96 rounded-lg bg-orange-400/10 blur-3xl" />
       <div className="-translate-x-1/2 absolute bottom-0 left-1/2 z-0 h-76 w-[700px] rounded-full bg-linear-to-r from-orange-400/10 to-orange-600/10 blur-3xl" />
-      <AuthDialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen} />
+      <AuthDialog onOpenChange={setIsAuthDialogOpen} open={isAuthDialogOpen} />
       <PricingDialog
-        open={isPricingDialogOpen}
         onOpenChange={setIsPricingDialogOpen}
+        open={isPricingDialogOpen}
       />
     </>
   );

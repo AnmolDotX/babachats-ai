@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useState, useEffect, memo } from "react";
 import { useRouter } from "next/navigation";
+import { memo, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { updateChatTitle } from "@/app/(chat)/actions";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
@@ -87,13 +87,13 @@ const PureChatItem = ({
         {isRenaming ? (
           <div className="flex w-full items-center p-0">
             <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onBlur={handleRename}
               autoFocus
               className="w-full bg-transparent px-2 py-1 text-sm outline-none focus:ring-0"
+              onBlur={handleRename}
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={handleKeyDown}
+              type="text"
+              value={title}
             />
           </div>
         ) : (
