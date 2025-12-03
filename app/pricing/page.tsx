@@ -9,29 +9,6 @@ export default function PricingPage() {
         <div className="-bottom-40 -right-40 h-96 w-96 rounded-full bg-red-300/20 blur-3xl dark:bg-red-500/10" />
       </div>
 
-      <nav className="relative z-10 flex w-full items-center justify-between px-6 py-4 md:px-12">
-        <Link className="flex items-center gap-2" href="/">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/20">
-            <Image
-              alt="BabaChats Guru"
-              className="h-8 w-8 object-contain opacity-90"
-              height={32}
-              src="/icon.png"
-              width={32}
-            />
-          </div>
-          <span className="font-bold font-mono text-xl tracking-tight">
-            BABA CHATS AI
-          </span>
-        </Link>
-        <Link
-          className="font-medium text-sm hover:text-orange-600 dark:hover:text-orange-400"
-          href="/login"
-        >
-          Sign In
-        </Link>
-      </nav>
-
       <main className="relative z-10 flex w-full max-w-6xl flex-col items-center px-4 py-16 text-center md:py-24">
         <h1 className="mb-4 font-bold font-serif text-4xl tracking-tight md:text-6xl">
           Invest in Your Spiritual Journey

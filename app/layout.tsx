@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
+import { auth } from "./(auth)/auth";
+import { AppBar } from "@/components/app-bar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://desichat.babacreates.in"),
@@ -48,11 +50,13 @@ const THEME_COLOR_SCRIPT = `\
   updateThemeColor();
 })();`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html
       className={`${geist.variable} ${geistMono.variable}`}
@@ -79,7 +83,10 @@ export default function RootLayout({
           enableSystem
         >
           <Toaster position="top-center" />
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <AppBar user={session?.user} />
+            {children}
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

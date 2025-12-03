@@ -1,68 +1,84 @@
+import { FlipWords } from "@/components/ui/flip-words";
+import { HeroImage } from "@/components/hero-image";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-orange-50 text-orange-950 dark:bg-zinc-950 dark:text-orange-50">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="-left-40 -top-40 h-96 w-96 rounded-full bg-orange-300/20 blur-3xl dark:bg-orange-500/10" />
-        <div className="-bottom-40 -right-40 h-96 w-96 rounded-full bg-red-300/20 blur-3xl dark:bg-red-500/10" />
-      </div>
+    <div className="relative min-h-screen bg-orange-50 dark:bg-zinc-950 text-orange-950 dark:text-orange-50 overflow-hidden font-sans selection:bg-orange-200 dark:selection:bg-orange-900">
+      {/* Grid Background */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"></div>
 
-      <main className="relative z-10 flex flex-col items-center px-4 text-center">
-        <div className="mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-orange-100 shadow-2xl ring-4 ring-orange-200 dark:bg-orange-900/20 dark:ring-orange-800">
-          {/* Using the favicon we generated as the logo */}
-          <Image
-            alt="BabaChats Guru"
-            className="h-24 w-24 object-contain opacity-90"
-            height={96}
-            priority
-            src="/icon.png"
-            width={96}
-          />
+      {/* Radial Gradient Overlay */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_800px_at_50%_200px,#fb923c1a,transparent)]"></div>
+
+      <main className="relative z-10 pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+        {/* Hero Badge */}
+        <div className="inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-sm font-medium text-orange-800 backdrop-blur-xl dark:border-orange-800 dark:bg-orange-900/20 dark:text-orange-200 mb-8">
+          <span className="flex h-2 w-2 rounded-full bg-orange-500 mr-2 animate-pulse"></span>
+          New: Reasoning Mode
         </div>
 
-        <h1 className="mb-4 font-extrabold font-mono text-5xl tracking-tight md:text-7xl">
-          BABA CHATS AI
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400">
+          Chat with Your <br className="hidden md:block" />
+          <FlipWords
+            className="text-7xl tracking-tight font-extrabold "
+            words={[
+              "Spiritual AI",
+              "Blunt Oracle",
+              "Raw Truth",
+              "Digital Guru",
+              "Soul's Mirror",
+            ]}
+            duration={2000}
+          />
         </h1>
 
-        <p className="mb-8 max-w-lg text-lg text-orange-800/80 md:text-xl dark:text-orange-200/80">
-          Seek wisdom from the digital sage. A spiritual chat experience that
-          challenges your beliefs and guides you towards the truth.
+        <p className="max-w-2xl text-lg md:text-xl text-orange-800/80 dark:text-orange-200/80 mb-10 leading-relaxed">
+          Beyond illusions, find your truth. A mirror for the soul, reflecting
+          wisdom and insight to guide your journey through life's complexities.
+          Discover profound understanding and clarity within.
         </p>
 
-        <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Link
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-orange-600 px-8 py-3 font-medium text-white shadow-lg transition-all hover:bg-orange-700 hover:shadow-orange-500/25 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
             href="/chat"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-orange-600 px-8 font-medium text-white shadow-lg shadow-orange-500/20 transition-all hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
           >
-            <span className="mr-2">Start Chatting</span>
+            Let's Chat
             <svg
-              className="h-5 w-5 transition-transform group-hover:translate-x-1"
+              className="ml-2 -mr-1 w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-              />
+                strokeWidth="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              ></path>
             </svg>
           </Link>
-
           <Link
-            className="inline-flex items-center justify-center rounded-full border-2 border-orange-200 px-8 py-3 font-medium text-orange-800 transition-colors hover:bg-orange-100 hover:text-orange-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:border-orange-800 dark:text-orange-200 dark:focus:ring-offset-zinc-950 dark:hover:bg-orange-900/30"
-            href="/login"
+            href="/about"
+            className="inline-flex h-12 items-center justify-center rounded-full border border-orange-200 bg-white/50 px-8 font-medium text-orange-900 shadow-sm backdrop-blur-sm transition-all hover:bg-orange-50 hover:text-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:border-orange-800 dark:bg-zinc-900/50 dark:text-orange-100 dark:hover:bg-orange-900/20 dark:focus:ring-offset-zinc-950"
           >
-            Sign In
+            Learn More
           </Link>
         </div>
+
+        {/* Hero Image / Mockup */}
+        <HeroImage />
       </main>
 
-      <footer className="absolute bottom-6 text-orange-800/40 text-sm dark:text-orange-200/40">
-        © {new Date().getFullYear()} BabaChats AI. All rights reserved.
+      <footer className="relative z-10 border-t border-orange-200/50 bg-white/30 backdrop-blur-sm py-8 dark:border-orange-900/50 dark:bg-zinc-950/30">
+        <div className="container mx-auto px-4 text-center text-sm text-orange-800/60 dark:text-orange-200/60">
+          <p>
+            © {new Date().getFullYear()} chat.babacreates.in | May your path be
+            illuminated. 🕯️
+          </p>
+        </div>
       </footer>
     </div>
   );

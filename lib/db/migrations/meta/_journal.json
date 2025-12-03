@@ -64,6 +64,13 @@
       "when": 1764762682399,
       "tag": "0008_green_microchip",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1764772477603,
+      "tag": "0009_condemned_hellcat",
+      "breakpoints": true
     }
   ]
 }
