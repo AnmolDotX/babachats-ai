@@ -29,10 +29,7 @@ export const HeroImage = () => {
   const y = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   return (
-    <div
-      ref={ref}
-      className="mt-16 relative w-full max-w-5xl mask-b-from-5% rounded-4xl "
-    >
+    <div ref={ref} className="mt-16 relative  w-full max-w-5xl">
       <motion.div
         style={{
           rotateX,
@@ -40,7 +37,7 @@ export const HeroImage = () => {
           opacity,
           y,
         }}
-        className="relative rounded-4xl border border-orange-200 bg-white/50  backdrop-blur-xl  overflow-hidden dark:border-orange-800/50 dark:bg-zinc-900/50 aspect-video"
+        className="relative rounded-2xl overflow-hidden border border-orange-200 bg-white/50  backdrop-blur-xl dark:border-orange-800/50 dark:bg-zinc-900/50 aspect-[16.35/9]"
       >
         <AnimatePresence mode="wait">
           {mounted && (
@@ -53,10 +50,10 @@ export const HeroImage = () => {
                 className="absolute inset-0 "
               >
                 <Image
-                  src="/hero-light.png"
+                  src="/chat-panel-light.png"
                   alt="App Screenshot Light"
                   fill
-                  className="object-cover "
+                  className="object-contain"
                   priority
                 />
               </motion.div>
@@ -68,10 +65,10 @@ export const HeroImage = () => {
                 className="absolute inset-0"
               >
                 <Image
-                  src="/hero.png"
+                  src="/chat-panel-dark.png"
                   alt="App Screenshot Dark"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
               </motion.div>

@@ -1,13 +1,14 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function PricingPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-orange-50 text-orange-950 dark:bg-zinc-950 dark:text-orange-50">
+    <div className="flex min-h-screen flex-col items-center bg-orange-50 text-orange-950 dark:bg-slate-950 dark:text-orange-50">
       <div className="absolute inset-0 overflow-hidden">
         <div className="-left-40 -top-40 h-96 w-96 rounded-full bg-orange-300/20 blur-3xl dark:bg-orange-500/10" />
         <div className="-bottom-40 -right-40 h-96 w-96 rounded-full bg-red-300/20 blur-3xl dark:bg-red-500/10" />
       </div>
+
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"></div>
 
       <main className="relative z-10 flex w-full max-w-6xl flex-col items-center px-4 py-16 text-center md:py-24">
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6 bg-linear-to-b from-orange-900 to-orange-600 bg-clip-text text-transparent dark:from-orange-50 dark:to-orange-400">

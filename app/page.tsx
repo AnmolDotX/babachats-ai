@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default async function LandingPage() {
   return (
-    <div className="relative min-h-screen bg-orange-50 dark:bg-zinc-950 text-orange-950 dark:text-orange-50 overflow-hidden font-sans selection:bg-orange-200 dark:selection:bg-orange-900">
+    <div className="relative min-h-screen bg-orange-50 dark:bg-slate-950 text-orange-950 dark:text-orange-50 overflow-hidden font-sans selection:bg-orange-200 dark:selection:bg-orange-900">
       {/* Grid Background */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"></div>
 
@@ -71,7 +71,7 @@ export default async function LandingPage() {
         <HeroImage />
       </main>
 
-      <footer className="relative z-10 border-t border-orange-200/50 bg-white/30 backdrop-blur-sm py-8 dark:border-orange-900/50 dark:bg-zinc-950/30">
+      <footer className="relative z-10 border-t border-orange-200/50 bg-slate-100/30 backdrop-blur-sm py-8 dark:border-orange-900/50 dark:bg-slate-950/30">
         <div className="container mx-auto px-4 text-center text-sm text-orange-800/60 dark:text-orange-200/60">
           <p>
             © {new Date().getFullYear()} chat.babacreates.in | May your path be

@@ -23,13 +23,16 @@ interface AppBarProps {
 
 export function AppBar({ user }: AppBarProps) {
   const pathname = usePathname();
-  const isAuthPage = pathname === "/login" || pathname === "/register";
+  const shouldHideAppBar =
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname.startsWith("/chat");
   const [isOpen, setIsOpen] = useState(false);
 
-  if (isAuthPage) return null;
+  if (shouldHideAppBar) return null;
 
   return (
-    <header className="fixed md:max-w-4xl lg:max-w-5xl xl:max-w-6xl left-0 right-0 mx-auto top-0 z-50 border-b border-orange-100 bg-white/50 backdrop-blur-md dark:border-orange-900/20 dark:bg-zinc-950/50 rounded-b-3xl">
+    <header className="fixed md:max-w-4xl lg:max-w-5xl xl:max-w-6xl left-0 right-0 mx-auto top-0 z-50 border-b border-orange-100 bg-slate-100/50 backdrop-blur-md dark:border-orange-900/20 dark:bg-slate-950/50 rounded-b-3xl">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <Image
