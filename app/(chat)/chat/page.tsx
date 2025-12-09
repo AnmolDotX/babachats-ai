@@ -9,9 +9,14 @@ import { auth } from "../../(auth)/auth";
 export default async function Page() {
   const session = await auth();
 
-  if (!session) {
-    redirect("/api/auth/guest");
-  }
+  /*
+   * The session check is handled by the middleware and the layout.
+   * Redundant checks here can cause race conditions or loops if the session
+   * is in the process of being established (e.g. during guest sign-in).
+   */
+  // if (!session) {
+  //   redirect("/api/auth/guest");
+  // }
 
   const id = generateUUID();
 

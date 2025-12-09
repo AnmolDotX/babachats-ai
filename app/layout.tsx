@@ -136,7 +136,11 @@ export default async function RootLayout({
           enableSystem
         >
           <Toaster position="top-center" />
-          <SessionProvider>
+          <SessionProvider
+            session={session}
+            refetchInterval={0}
+            refetchOnWindowFocus={false}
+          >
             <AppBar user={session?.user} />
             {children}
           </SessionProvider>
