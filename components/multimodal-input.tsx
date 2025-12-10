@@ -252,7 +252,7 @@ function PureMultimodalInput({
       />
 
       <PromptInput
-        className="rounded-xl rounded-b-none border border-border border-b-0 bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
+        className="rounded-xl rounded-b-none border border-orange-200/50 dark:border-orange-800/30 border-b-0 bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-orange-400 dark:focus-within:border-orange-600 hover:border-orange-300 dark:hover:border-orange-700/50"
         onSubmit={(event) => {
           event.preventDefault();
           if (status !== "ready" && status !== "error") {
@@ -327,7 +327,7 @@ function PureMultimodalInput({
             <StopButton setMessages={setMessages} stop={stop} />
           ) : (
             <PromptInputSubmit
-              className="size-8 rounded-full bg-primary text-primary-foreground transition-colors duration-200 hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
+              className="size-8 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white transition-all duration-200 hover:from-orange-600 hover:to-orange-700 hover:shadow-md disabled:bg-muted disabled:from-muted disabled:to-muted disabled:text-muted-foreground"
               disabled={!input.trim() || uploadQueue.length > 0}
               status={status}
             >
@@ -460,7 +460,7 @@ function PureStopButton({
 }) {
   return (
     <Button
-      className="size-7 rounded-full bg-foreground p-1 text-background transition-colors duration-200 hover:bg-foreground/90 disabled:bg-muted disabled:text-muted-foreground"
+      className="size-7 rounded-full bg-red-600 p-1 text-white transition-all duration-200 hover:bg-red-700 hover:shadow-md disabled:bg-muted disabled:text-muted-foreground"
       data-testid="stop-button"
       onClick={(event) => {
         event.preventDefault();

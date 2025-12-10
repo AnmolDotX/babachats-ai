@@ -83,12 +83,20 @@ const PureChatItem = ({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={isActive}>
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        className={
+          isActive
+            ? "bg-orange-100/70 dark:bg-orange-900/30 text-orange-900 dark:text-orange-100 hover:bg-orange-100 dark:hover:bg-orange-900/40 border-l-2 border-orange-500"
+            : "hover:bg-orange-50/50 dark:hover:bg-orange-950/30 text-orange-900/70 dark:text-orange-100/70 hover:text-orange-900 dark:hover:text-orange-100"
+        }
+      >
         {isRenaming ? (
           <div className="flex w-full items-center p-0">
             <input
               autoFocus
-              className="w-full bg-transparent px-2 py-1 text-sm outline-none focus:ring-0"
+              className="w-full bg-transparent px-2 py-1 text-sm outline-none focus:ring-1 focus:ring-orange-400 rounded"
               onBlur={handleRename}
               onChange={(e) => setTitle(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -106,7 +114,7 @@ const PureChatItem = ({
       <DropdownMenu modal={true}>
         <DropdownMenuTrigger asChild>
           <SidebarMenuAction
-            className="mr-0.5 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            className="mr-0.5 data-[state=open]:bg-orange-100 dark:data-[state=open]:bg-orange-900/30 data-[state=open]:text-orange-700 dark:data-[state=open]:text-orange-300"
             showOnHover={!isActive}
           >
             <MoreHorizontalIcon />
@@ -114,23 +122,27 @@ const PureChatItem = ({
           </SidebarMenuAction>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" side="bottom">
+        <DropdownMenuContent
+          align="end"
+          side="bottom"
+          className="bg-orange-50 dark:bg-zinc-900 border-orange-200 dark:border-orange-800"
+        >
           <DropdownMenuItem
-            className="cursor-pointer"
+            className="cursor-pointer text-orange-900 dark:text-orange-100 focus:bg-orange-100 dark:focus:bg-orange-900/30"
             onSelect={() => setIsRenaming(true)}
           >
             <PencilEditIcon className="mr-2 h-4 w-4" />
             <span>Rename</span>
           </DropdownMenuItem>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="cursor-pointer">
+            <DropdownMenuSubTrigger className="cursor-pointer text-orange-900 dark:text-orange-100 focus:bg-orange-100 dark:focus:bg-orange-900/30">
               <ShareIcon />
               <span>Share</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent>
+              <DropdownMenuSubContent className="bg-orange-50 dark:bg-zinc-900 border-orange-200 dark:border-orange-800">
                 <DropdownMenuItem
-                  className="cursor-pointer flex-row justify-between"
+                  className="cursor-pointer flex-row justify-between text-orange-900 dark:text-orange-100 focus:bg-orange-100 dark:focus:bg-orange-900/30"
                   onClick={() => {
                     setVisibilityType("private");
                   }}
@@ -144,7 +156,7 @@ const PureChatItem = ({
                   ) : null}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="cursor-pointer flex-row justify-between"
+                  className="cursor-pointer flex-row justify-between text-orange-900 dark:text-orange-100 focus:bg-orange-100 dark:focus:bg-orange-900/30"
                   onClick={() => {
                     setVisibilityType("public");
                   }}
@@ -160,7 +172,7 @@ const PureChatItem = ({
           </DropdownMenuSub>
 
           <DropdownMenuItem
-            className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
+            className="cursor-pointer text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-900/30"
             onSelect={() => onDelete(chat.id)}
           >
             <TrashIcon />

@@ -91,7 +91,6 @@ function PureMessages({
       <Conversation className="mx-auto flex min-w-0 max-w-4xl flex-col gap-4 md:gap-6">
         <ConversationContent className="flex flex-col gap-4 px-2 py-4 md:gap-6 md:px-4">
           {messages.length === 0 && <Greeting />}
-
           {messages.map((message, index) => (
             <div
               className="w-full"
@@ -120,7 +119,24 @@ function PureMessages({
           ))}
 
           <AnimatePresence mode="wait">
-            {status === "submitted" && <ThinkingMessage key="thinking" />}
+            {(status === "submitted" ||
+              (status === "streaming" &&
+                (() => {
+                  const lastMessage = messages.at(-1);
+                  // Show loader if last message is from user
+                  if (lastMessage?.role === "user") return true;
+                  // Show loader if assistant message has no text content yet
+                  if (lastMessage?.role === "assistant") {
+                    const hasTextContent = lastMessage.parts?.some(
+                      (part) =>
+                        part.type === "text" &&
+                        part.text &&
+                        part.text.length > 0
+                    );
+                    return !hasTextContent;
+                  }
+                  return false;
+                })())) && <ThinkingMessage key="thinking" />}
           </AnimatePresence>
 
           <div

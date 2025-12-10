@@ -131,17 +131,24 @@ export function AppSidebar({ user }: { user: User | undefined }) {
         onOpenChange={setShowDeleteAllDialog}
         open={showDeleteAllDialog}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="border-orange-200 dark:border-orange-800/50">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete all chats?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-orange-900 dark:text-orange-100">
+              Delete all chats?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-orange-700/70 dark:text-orange-300/70">
               This action cannot be undone. This will permanently delete all
               your chats and remove them from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteAll}>
+            <AlertDialogCancel className="border-orange-200 dark:border-orange-800 hover:bg-orange-50 dark:hover:bg-orange-950/30">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAll}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
               Delete All
             </AlertDialogAction>
           </AlertDialogFooter>

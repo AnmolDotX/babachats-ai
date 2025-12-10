@@ -167,7 +167,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
   if (isLoading) {
     return (
       <SidebarGroup>
-        <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+        <div className="px-2 py-1 text-orange-600/70 dark:text-orange-400/70 text-xs font-medium">
           Today
         </div>
         <SidebarGroupContent>
@@ -197,7 +197,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
     return (
       <SidebarGroup>
         <SidebarGroupContent>
-          <div className="flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-zinc-500">
+          <div className="flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-orange-600/60 dark:text-orange-400/60">
             Your conversations will appear here once you start chatting!
           </div>
         </SidebarGroupContent>
@@ -222,7 +222,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
                   <div className="flex flex-col gap-6 divide-y divide-white">
                     {groupedChats.today.length > 0 && (
                       <div>
-                        <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+                        <div className="px-2 py-1 text-orange-600/70 dark:text-orange-400/70 text-xs font-medium">
                           Today
                         </div>
                         <div className="flex w-full flex-col gap-2">
@@ -244,7 +244,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
                     {groupedChats.yesterday.length > 0 && (
                       <div>
-                        <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+                        <div className="px-2 py-1 text-orange-600/70 dark:text-orange-400/70 text-xs font-medium">
                           Yesterday
                         </div>
                         {groupedChats.yesterday.map((chat) => (
@@ -264,7 +264,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
                     {groupedChats.lastWeek.length > 0 && (
                       <div>
-                        <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+                        <div className="px-2 py-1 text-orange-600/70 dark:text-orange-400/70 text-xs font-medium">
                           Last 7 days
                         </div>
                         {groupedChats.lastWeek.map((chat) => (
@@ -284,7 +284,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
                     {groupedChats.lastMonth.length > 0 && (
                       <div>
-                        <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+                        <div className="px-2 py-1 text-orange-600/70 dark:text-orange-400/70 text-xs font-medium">
                           Last 30 days
                         </div>
                         {groupedChats.lastMonth.map((chat) => (
@@ -304,8 +304,8 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
                     {groupedChats.older.length > 0 && (
                       <div>
-                        <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-                          Older than last month
+                        <div className="px-2 py-1 text-orange-600/70 dark:text-orange-400/70 text-xs font-medium">
+                          Older
                         </div>
                         {groupedChats.older.map((chat) => (
                           <ChatItem
@@ -335,11 +335,11 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
           />
 
           {hasReachedEnd ? (
-            <div className="mt-8 flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-zinc-500">
+            <div className="mt-8 flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-orange-600/60 dark:text-orange-400/60">
               You have reached the end of your chat history.
             </div>
           ) : (
-            <div className="mt-8 flex flex-row items-center gap-2 p-2 text-zinc-500 dark:text-zinc-400">
+            <div className="mt-8 flex flex-row items-center gap-2 p-2 text-orange-600/60 dark:text-orange-400/60">
               <div className="animate-spin">
                 <LoaderIcon />
               </div>
@@ -350,18 +350,25 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       </SidebarGroup>
 
       <AlertDialog onOpenChange={setShowDeleteDialog} open={showDeleteDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="border-orange-200 dark:border-orange-800/50">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-orange-900 dark:text-orange-100">
+              Are you absolutely sure?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-orange-700/70 dark:text-orange-300/70">
               This action cannot be undone. This will permanently delete your
               chat and remove it from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>
-              Continue
+            <AlertDialogCancel className="border-orange-200 dark:border-orange-800 hover:bg-orange-50 dark:hover:bg-orange-950/30">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
