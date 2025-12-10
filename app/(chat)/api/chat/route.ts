@@ -30,6 +30,7 @@ import {
   getGuestMessageCount,
   getMessageCountByUserId,
   getMessagesByChatId,
+  getUserProfile,
   incrementGuestMessageCount,
   saveChat,
   saveMessages,
@@ -163,6 +164,11 @@ export async function POST(request: Request) {
     const messagesFromDb = await getMessagesByChatId({ id });
     const uiMessages = [...convertToUIMessages(messagesFromDb), message];
 
+    // Fetch user profile for personalized responses
+    const userProfile = session.user.id
+      ? await getUserProfile({ userId: session.user.id })
+      : null;
+
     const { longitude, latitude, city, country } = geolocation(request);
 
     const requestHints: RequestHints = {
@@ -194,7 +200,7 @@ export async function POST(request: Request) {
       execute: ({ writer: dataStream }) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel, requestHints }),
+          system: systemPrompt({ selectedChatModel, requestHints, userProfile }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
           experimental_activeTools: [],

@@ -61,7 +61,7 @@ export function SidebarUserNav({ user }: { user: User }) {
                     alt={user.email ?? "User Avatar"}
                     className="rounded-full"
                     height={24}
-                    src={`https://avatar.vercel.sh/${user.email}`}
+                    src={user.image || `https://avatar.vercel.sh/${user.email}`}
                     width={24}
                   />
                 )}
@@ -86,6 +86,15 @@ export function SidebarUserNav({ user }: { user: User }) {
             >
               {`Toggle ${resolvedTheme === "light" ? "dark" : "light"} mode`}
             </DropdownMenuItem>
+            {!isGuest && (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                data-testid="user-nav-item-profile"
+                onSelect={() => router.push("/profile")}
+              >
+                Profile
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild data-testid="user-nav-item-auth">
               <button

@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "ik.imagekit.io",
       },
+      {
+        hostname : "lh3.googleusercontent.com"
+      }
     ],
   },
 };

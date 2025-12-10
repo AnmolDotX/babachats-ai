@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { memo } from "react";
+import { useSession } from "next-auth/react";
 import { useWindowSize } from "usehooks-ts";
 import { SidebarToggle } from "@/components/sidebar-toggle";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ function PureChatHeader({
 }) {
   const router = useRouter();
   const { open } = useSidebar();
-
+  const { data: session } = useSession();
   const { width: windowWidth } = useWindowSize();
 
   return (

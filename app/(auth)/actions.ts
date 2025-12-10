@@ -82,3 +82,8 @@ export const register = async (
     return { status: "failed" };
   }
 };
+
+// Google OAuth Sign In
+export const signInWithGoogle = async () => {
+  await signIn("google", { redirectTo: "/chat" });
+};

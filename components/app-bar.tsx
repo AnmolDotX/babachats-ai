@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { type User } from "next-auth";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { Menu } from "lucide-react";
+import { useState } from "react";
+import { LogOut, Menu, MessageCircle, User as UserIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -14,8 +15,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UserAvatarMenu } from "@/components/user-avatar-menu";
 
 interface AppBarProps {
   user?: User;
@@ -29,7 +30,15 @@ export function AppBar({ user }: AppBarProps) {
     pathname.startsWith("/chat");
   const [isOpen, setIsOpen] = useState(false);
 
+  const isOnProfile = pathname === "/profile";
+  const isOnChat = pathname.startsWith("/chat");
+
   if (shouldHideAppBar) return null;
+
+  // Get user avatar for mobile menu
+  const userAvatar =
+    user?.image ||
+    (user?.email ? `https://avatar.vercel.sh/${user.email}` : null);
 
   return (
     <header className="fixed md:max-w-4xl lg:max-w-5xl xl:max-w-6xl left-0 right-0 mx-auto top-0 z-50 border-b border-orange-100 bg-slate-100/50 backdrop-blur-md dark:border-orange-900/20 dark:bg-slate-950/50 rounded-b-3xl">
@@ -72,13 +81,7 @@ export function AppBar({ user }: AppBarProps) {
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-4">
           {user ? (
-            <Button
-              variant="ghost"
-              onClick={() => signOut()}
-              className="text-orange-900 cursor-pointer hover:text-orange-700 hover:bg-orange-100 dark:text-orange-100 dark:hover:text-orange-300 dark:hover:bg-orange-900/20"
-            >
-              Sign Out
-            </Button>
+            <UserAvatarMenu user={user} size="md" />
           ) : (
             <>
               <Link href="/login">
@@ -122,6 +125,35 @@ export function AppBar({ user }: AppBarProps) {
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-6 mt-8">
+                {/* User info for mobile when logged in */}
+                {user && (
+                  <div className="flex items-center gap-3 pb-4 border-b border-orange-200 dark:border-orange-800">
+                    <div className="relative size-10 overflow-hidden rounded-full border-2 border-orange-200 dark:border-orange-700">
+                      {userAvatar ? (
+                        <Image
+                          src={userAvatar}
+                          alt={user.name || user.email || "User"}
+                          width={40}
+                          height={40}
+                          className="size-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex size-full items-center justify-center bg-orange-500 text-white font-semibold">
+                          {(user.name || user.email || "U")[0].toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-orange-900 dark:text-orange-100 truncate">
+                        {user.name || "User"}
+                      </p>
+                      <p className="text-xs text-orange-600/70 dark:text-orange-400/70 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <nav className="flex flex-col gap-4">
                   <Link
                     href="/pricing"
@@ -147,16 +179,48 @@ export function AppBar({ user }: AppBarProps) {
                 </nav>
                 <div className="flex flex-col gap-4 mt-auto">
                   {user ? (
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        signOut();
-                        setIsOpen(false);
-                      }}
-                      className="w-full border-orange-200 text-orange-900 hover:bg-orange-100 dark:border-orange-800 dark:text-orange-100 dark:hover:bg-orange-900/20"
-                    >
-                      Sign Out
-                    </Button>
+                    <>
+                      {/* Profile link - hidden on profile */}
+                      {!isOnProfile && (
+                        <Link
+                          href="/profile"
+                          className="w-full"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Button
+                            variant="outline"
+                            className="w-full border-orange-200 text-orange-900 hover:bg-orange-100 dark:border-orange-800 dark:text-orange-100 dark:hover:bg-orange-900/20"
+                          >
+                            <UserIcon className="mr-2 size-4" />
+                            Profile
+                          </Button>
+                        </Link>
+                      )}
+                      {/* Chat link - hidden on chat */}
+                      {!isOnChat && (
+                        <Link
+                          href="/chat"
+                          className="w-full"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-full">
+                            <MessageCircle className="mr-2 size-4" />
+                            Chat
+                          </Button>
+                        </Link>
+                      )}
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          signOut();
+                          setIsOpen(false);
+                        }}
+                        className="w-full border-red-200 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20"
+                      >
+                        <LogOut className="mr-2 size-4" />
+                        Sign Out
+                      </Button>
+                    </>
                   ) : (
                     <>
                       <Link

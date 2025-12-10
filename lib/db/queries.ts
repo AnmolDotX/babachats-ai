@@ -31,6 +31,8 @@ import {
   suggestion,
   type User,
   user,
+  type UserProfile,
+  userProfile,
   vote,
 } from "./schema";
 import { generateHashedPassword } from "./utils";
@@ -666,5 +668,174 @@ export async function incrementGuestMessageCount(ip: string) {
     }
   } catch (_error) {
     console.error("Failed to increment guest message count", _error);
+  }
+}
+
+// User Profile Functions
+export async function getUserProfile({
+  userId,
+}: {
+  userId: string;
+}): Promise<UserProfile | null> {
+  try {
+    const [profile] = await db
+      .select()
+      .from(userProfile)
+      .where(eq(userProfile.userId, userId));
+
+    return profile ?? null;
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to get user profile"
+    );
+  }
+}
+
+export async function upsertUserProfile({
+  userId,
+  displayName,
+  skills,
+  hobbies,
+  motivations,
+  currentFeelings,
+  occupation,
+  additionalContext,
+}: {
+  userId: string;
+  displayName?: string | null;
+  skills?: string | null;
+  hobbies?: string | null;
+  motivations?: string | null;
+  currentFeelings?: string | null;
+  occupation?: string | null;
+  additionalContext?: string | null;
+}) {
+  try {
+    const existingProfile = await getUserProfile({ userId });
+
+    if (existingProfile) {
+      return await db
+        .update(userProfile)
+        .set({
+          displayName: displayName ?? existingProfile.displayName,
+          skills: skills ?? existingProfile.skills,
+          hobbies: hobbies ?? existingProfile.hobbies,
+          motivations: motivations ?? existingProfile.motivations,
+          currentFeelings: currentFeelings ?? existingProfile.currentFeelings,
+          occupation: occupation ?? existingProfile.occupation,
+          additionalContext:
+            additionalContext ?? existingProfile.additionalContext,
+          updatedAt: new Date(),
+        })
+        .where(eq(userProfile.userId, userId))
+        .returning();
+    }
+
+    return await db
+      .insert(userProfile)
+      .values({
+        userId,
+        displayName,
+        skills,
+        hobbies,
+        motivations,
+        currentFeelings,
+        occupation,
+        additionalContext,
+        updatedAt: new Date(),
+      })
+      .returning();
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to upsert user profile"
+    );
+  }
+}
+
+export async function deleteUserProfile({ userId }: { userId: string }) {
+  try {
+    return await db
+      .delete(userProfile)
+      .where(eq(userProfile.userId, userId))
+      .returning();
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to delete user profile"
+    );
+  }
+}
+
+// Account Management Functions
+export async function getUserById({ id }: { id: string }): Promise<User | null> {
+  try {
+    const [foundUser] = await db.select().from(user).where(eq(user.id, id));
+    return foundUser ?? null;
+  } catch (_error) {
+    throw new ChatSDKError("bad_request:database", "Failed to get user by id");
+  }
+}
+
+export async function updateUserName({
+  userId,
+  name,
+}: {
+  userId: string;
+  name: string;
+}) {
+  try {
+    return await db
+      .update(user)
+      .set({ name })
+      .where(eq(user.id, userId))
+      .returning();
+  } catch (_error) {
+    throw new ChatSDKError("bad_request:database", "Failed to update user name");
+  }
+}
+
+export async function updateUserPassword({
+  userId,
+  newPassword,
+}: {
+  userId: string;
+  newPassword: string;
+}) {
+  const hashedPassword = generateHashedPassword(newPassword);
+  
+  try {
+    return await db
+      .update(user)
+      .set({ password: hashedPassword })
+      .where(eq(user.id, userId))
+      .returning();
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to update user password"
+    );
+  }
+}
+
+export async function updateUserImage({
+  userId,
+  image,
+}: {
+  userId: string;
+  image: string;
+}) {
+  try {
+    return await db
+      .update(user)
+      .set({ image })
+      .where(eq(user.id, userId))
+      .returning();
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to update user image"
+    );
   }
 }

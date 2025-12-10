@@ -24,7 +24,7 @@ const getActionText = (
 
 type DocumentToolResultProps = {
   type: "create" | "update" | "request-suggestions";
-  result: { id: string; title: string; kind: ArtifactKind };
+  result: { id: string; title: string; kind: string };
   isReadonly: boolean;
 };
 
@@ -57,7 +57,9 @@ function PureDocumentToolResult({
 
         setArtifact({
           documentId: result.id,
-          kind: result.kind,
+          kind: (result.kind === "text" || result.kind === "image"
+            ? result.kind
+            : "text") as ArtifactKind,
           content: "",
           title: result.title,
           isVisible: true,
@@ -145,10 +147,10 @@ function PureDocumentToolCall({
             type === "create" && "title" in args && args.title
               ? `"${args.title}"`
               : type === "update" && "description" in args
-                ? `"${args.description}"`
-                : type === "request-suggestions"
-                  ? "for document"
-                  : ""
+              ? `"${args.description}"`
+              : type === "request-suggestions"
+              ? "for document"
+              : ""
           }`}
         </div>
       </div>

@@ -206,3 +206,20 @@ export const guestRateLimits = pgTable("guest_rate_limits", {
   count: integer("count").notNull().default(0),
   lastUpdated: timestamp("last_updated").notNull().defaultNow(),
 });
+
+export const userProfile = pgTable("UserProfile", {
+  userId: uuid("userId")
+    .primaryKey()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  displayName: text("displayName"),
+  skills: text("skills"),
+  hobbies: text("hobbies"),
+  motivations: text("motivations"),
+  currentFeelings: text("currentFeelings"),
+  occupation: text("occupation"),
+  additionalContext: text("additionalContext"),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export type UserProfile = InferSelectModel<typeof userProfile>;

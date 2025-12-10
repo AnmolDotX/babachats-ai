@@ -14,12 +14,10 @@ import { useArtifact } from "@/hooks/use-artifact";
 import type { Document } from "@/lib/db/schema";
 import { cn, fetcher } from "@/lib/utils";
 import type { ArtifactKind, UIArtifact } from "./artifact";
-import { CodeEditor } from "./code-editor";
 import { DocumentToolCall, DocumentToolResult } from "./document";
 import { InlineDocumentSkeleton } from "./document-skeleton";
 import { FileIcon, FullscreenIcon, ImageIcon, LoaderIcon } from "./icons";
 import { ImageEditor } from "./image-editor";
-import { SpreadsheetEditor } from "./sheet-editor";
 import { Editor } from "./text-editor";
 
 type DocumentPreviewProps = {
@@ -87,15 +85,15 @@ export function DocumentPreview({
   const document: Document | null = previewDocument
     ? previewDocument
     : artifact.status === "streaming"
-      ? {
-          title: artifact.title,
-          kind: artifact.kind,
-          content: artifact.content,
-          id: artifact.documentId,
-          createdAt: new Date(),
-          userId: "noop",
-        }
-      : null;
+    ? {
+        title: artifact.title,
+        kind: artifact.kind,
+        content: artifact.content,
+        id: artifact.documentId,
+        createdAt: new Date(),
+        userId: "noop",
+      }
+    : null;
 
   if (!document) {
     return <LoadingSkeleton artifactKind={artifact.kind} />;
@@ -110,7 +108,7 @@ export function DocumentPreview({
       />
       <DocumentHeader
         isStreaming={artifact.status === "streaming"}
-        kind={document.kind}
+        kind={document.kind as ArtifactKind}
         title={document.title}
       />
       <DocumentContent document={document} />
@@ -247,10 +245,7 @@ const DocumentContent = ({ document }: { document: Document }) => {
 
   const containerClassName = cn(
     "h-[257px] overflow-y-scroll rounded-b-2xl border border-t-0 dark:border-zinc-700 dark:bg-muted",
-    {
-      "p-4 sm:px-14 sm:py-16": document.kind === "text",
-      "p-0": document.kind === "code",
-    }
+    "p-4 sm:px-14 sm:py-16"
   );
 
   const commonProps = {
@@ -266,21 +261,7 @@ const DocumentContent = ({ document }: { document: Document }) => {
 
   return (
     <div className={containerClassName}>
-      {document.kind === "text" ? (
-        <Editor {...commonProps} onSaveContent={handleSaveContent} />
-      ) : document.kind === "code" ? (
-        <div className="relative flex w-full flex-1">
-          <div className="absolute inset-0">
-            <CodeEditor {...commonProps} onSaveContent={handleSaveContent} />
-          </div>
-        </div>
-      ) : document.kind === "sheet" ? (
-        <div className="relative flex size-full flex-1 p-4">
-          <div className="absolute inset-0">
-            <SpreadsheetEditor {...commonProps} />
-          </div>
-        </div>
-      ) : document.kind === "image" ? (
+      {document.kind === "image" ? (
         <ImageEditor
           content={document.content ?? ""}
           currentVersionIndex={0}
@@ -289,7 +270,10 @@ const DocumentContent = ({ document }: { document: Document }) => {
           status={artifact.status}
           title={document.title}
         />
-      ) : null}
+      ) : (
+        // Default to text editor for text and any legacy document kinds
+        <Editor {...commonProps} onSaveContent={handleSaveContent} />
+      )}
     </div>
   );
 };

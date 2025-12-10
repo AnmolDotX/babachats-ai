@@ -71,6 +71,13 @@
       "when": 1764772477603,
       "tag": "0009_condemned_hellcat",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1765360112043,
+      "tag": "0010_yummy_champions",
+      "breakpoints": true
     }
   ]
 }
