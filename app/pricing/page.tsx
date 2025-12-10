@@ -48,7 +48,7 @@ export default function PricingPage() {
             <ul className="mb-8 flex-1 space-y-4 text-left">
               <li className="flex items-center gap-2">
                 <CheckIcon className="h-5 w-5 text-orange-600" />
-                <span>100 Messages per day</span>
+                <span>20 Messages per day</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckIcon className="h-5 w-5 text-orange-600" />

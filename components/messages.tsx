@@ -123,9 +123,7 @@ function PureMessages({
               (status === "streaming" &&
                 (() => {
                   const lastMessage = messages.at(-1);
-                  // Show loader if last message is from user
                   if (lastMessage?.role === "user") return true;
-                  // Show loader if assistant message has no text content yet
                   if (lastMessage?.role === "assistant") {
                     const hasTextContent = lastMessage.parts?.some(
                       (part) =>

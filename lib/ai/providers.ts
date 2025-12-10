@@ -21,7 +21,7 @@ export const myProvider = isTestEnvironment
       languageModels: {
         // Updated model across all categories
         "chat-model": google("gemini-2.5-flash"),
-        "chat-model-reasoning": google("gemini-2.5-pro"),
+        "chat-model-reasoning": google("gemini-2.5-flash-lite"),
         "title-model": google("gemini-2.5-flash"),
         "artifact-model": google("gemini-2.5-flash"),
       },

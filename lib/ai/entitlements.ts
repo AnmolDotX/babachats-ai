@@ -23,7 +23,7 @@ export const entitlementsByUserType: Record<UserType, Entitlements> = {
    */
   regular: {
     maxMessagesPerDay: Number.parseInt(
-      process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT ?? "100",
+      process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT ?? "20",
       10
     ),
     availableChatModelIds: ["chat-model", "chat-model-reasoning"],
