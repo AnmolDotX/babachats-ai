@@ -33,7 +33,7 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
           <Link
-            href="mailto:hello@babacreates.in"
+            href="mailto:anmol@zarasana.com"
             className="group flex flex-col items-center justify-center p-8 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm border border-orange-200/50 dark:border-orange-800/50 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02] hover:bg-orange-50/80 dark:hover:bg-orange-900/20"
           >
             <div className="h-12 w-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform">
@@ -43,12 +43,12 @@ export default function ContactPage() {
               Email Us
             </h3>
             <p className="text-sm text-orange-800/60 dark:text-orange-200/60">
-              kumaranmol8611@gmail.com
+              anmol@zarasana.com
             </p>
           </Link>
 
           <Link
-            href="https://twitter.com/babacreatesui"
+            href="https://x.com/AnmolDotX"
             target="_blank"
             className="group flex flex-col items-center justify-center p-8 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm border border-orange-200/50 dark:border-orange-800/50 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02] hover:bg-orange-50/80 dark:hover:bg-orange-900/20"
           >
@@ -56,10 +56,10 @@ export default function ContactPage() {
               <Twitter />
             </div>
             <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-100 mb-2">
-              Twitter / X
+              X
             </h3>
             <p className="text-sm text-orange-800/60 dark:text-orange-200/60">
-              @babacreatesui
+              @AnmolDotX
             </p>
           </Link>
         </div>
