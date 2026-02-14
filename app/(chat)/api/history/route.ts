@@ -20,7 +20,8 @@ export async function GET(request: NextRequest) {
   const session = await auth();
 
   if (!session?.user) {
-    return new ChatSDKError("unauthorized:chat").toResponse();
+    // Return empty history for unlogged users instead of 401
+    return Response.json({ chats: [], hasMore: false });
   }
 
   const chats = await getChatsByUserId({

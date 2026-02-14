@@ -4,16 +4,14 @@ import type { DefaultJWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { eq } from "drizzle-orm";
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
 import { DUMMY_PASSWORD } from "@/lib/constants";
 import { createGuestUser, getUser } from "@/lib/db/queries";
 import { generateDummyPassword } from "@/lib/db/utils";
 import { user } from "@/lib/db/schema";
+import { getDb } from "@/lib/db/client";
 import { authConfig } from "./auth.config";
 
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
+const db = getDb();
 
 export type UserType = "guest" | "regular";
 

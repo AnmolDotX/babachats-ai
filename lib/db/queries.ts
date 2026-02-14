@@ -12,8 +12,6 @@ import {
   lt,
   type SQL,
 } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
 import type { ArtifactKind } from "@/components/artifact";
 import type { VisibilityType } from "@/components/visibility-selector";
 import { ChatSDKError } from "../errors";
@@ -36,14 +34,13 @@ import {
   vote,
 } from "./schema";
 import { generateHashedPassword } from "./utils";
+import { getDb } from "./client";
 
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
 // https://authjs.dev/reference/adapter/drizzle
 
-// biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
+const db = getDb();
 
 export async function getUser(email: string): Promise<User[]> {
   try {
@@ -79,6 +76,36 @@ export async function createGuestUser() {
     throw new ChatSDKError(
       "bad_request:database",
       "Failed to create guest user"
+    );
+  }
+}
+
+export async function getOrCreateGuestUserByIP(ip: string) {
+  const guestEmail = `guest-ip-${ip.replace(/[^a-zA-Z0-9]/g, '-')}@temporary.local`;
+  
+  try {
+    // Try to find existing guest user for this IP
+    const existingUsers = await db.select().from(user).where(eq(user.email, guestEmail));
+    
+    if (existingUsers.length > 0) {
+      return existingUsers[0];
+    }
+    
+    // Create new guest user for this IP
+    const password = generateHashedPassword(generateUUID());
+    const [newUser] = await db.insert(user).values({ 
+      email: guestEmail, 
+      password 
+    }).returning({
+      id: user.id,
+      email: user.email,
+    });
+    
+    return newUser;
+  } catch (_error) {
+    throw new ChatSDKError(
+      "bad_request:database",
+      "Failed to get or create guest user by IP"
     );
   }
 }

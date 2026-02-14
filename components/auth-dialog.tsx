@@ -26,17 +26,17 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
             Continue Your Journey 🙏
           </DialogTitle>
           <DialogDescription className="space-y-2 text-orange-700/80 dark:text-orange-300/80">
-            <p>
+            <div>
               You've used all your guest messages. Sign in to unlock{" "}
               <span className="font-semibold text-orange-600 dark:text-orange-400">
                 20 free messages per day
               </span>
               !
-            </p>
-            <p className="text-sm">
+            </div>
+            <div className="text-sm">
               Creating an account also saves your chat history and personalizes
               your spiritual guidance.
-            </p>
+            </div>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">

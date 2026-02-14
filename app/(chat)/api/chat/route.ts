@@ -8,11 +8,6 @@ import {
   streamText,
 } from "ai";
 import { unstable_cache as cache } from "next/cache";
-import { after } from "next/server";
-import {
-  createResumableStreamContext,
-  type ResumableStreamContext,
-} from "resumable-stream";
 import type { ModelCatalog } from "tokenlens/core";
 import { fetchModels } from "tokenlens/fetch";
 import { getUsage } from "tokenlens/helpers";
@@ -24,12 +19,12 @@ import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { myProvider } from "@/lib/ai/providers";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
-  createStreamId,
   deleteChatById,
   getChatById,
   getGuestMessageCount,
   getMessageCountByUserId,
   getMessagesByChatId,
+  getOrCreateGuestUserByIP,
   getUserProfile,
   incrementGuestMessageCount,
   saveChat,
@@ -44,8 +39,6 @@ import { generateTitleFromUserMessage } from "../../actions";
 import { type PostRequestBody, postRequestBodySchema } from "./schema";
 
 export const maxDuration = 60;
-
-let globalStreamContext: ResumableStreamContext | null = null;
 
 const getTokenlensCatalog = cache(
   async (): Promise<ModelCatalog | undefined> => {
@@ -62,26 +55,6 @@ const getTokenlensCatalog = cache(
   ["tokenlens-catalog"],
   { revalidate: 24 * 60 * 60 } // 24 hours
 );
-
-export function getStreamContext() {
-  if (!globalStreamContext) {
-    try {
-      globalStreamContext = createResumableStreamContext({
-        waitUntil: after,
-      });
-    } catch (error: any) {
-      if (error.message.includes("REDIS_URL")) {
-        console.log(
-          " > Resumable streams are disabled due to missing REDIS_URL"
-        );
-      } else {
-        console.error(error);
-      }
-    }
-  }
-
-  return globalStreamContext;
-}
 
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
@@ -108,44 +81,70 @@ export async function POST(request: Request) {
 
     const session = await auth();
 
+    // Allow unlogged users to send messages with IP-based rate limiting
+    let userType: UserType;
+    let userId: string;
+
     if (!session?.user) {
-      return new ChatSDKError("unauthorized:chat").toResponse();
-    }
-
-    const userType: UserType = session.user.type;
-
-    if (userType === "guest") {
+      // Handle unlogged users as guests with IP-based rate limiting
       const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
       const guestMessageCount = await getGuestMessageCount(ip);
 
-      console.log("DEBUG: Guest Rate Limit Check", {
+      console.log("DEBUG: Unlogged User Rate Limit Check", {
         ip,
         guestMessageCount,
-        limit: entitlementsByUserType[userType].maxMessagesPerDay,
+        limit: entitlementsByUserType.guest.maxMessagesPerDay,
       });
 
       if (
-        guestMessageCount >= entitlementsByUserType[userType].maxMessagesPerDay
+        guestMessageCount >= entitlementsByUserType.guest.maxMessagesPerDay
       ) {
-        console.log("DEBUG: Limit Reached");
+        console.log("DEBUG: Guest Limit Reached");
         return new ChatSDKError("rate_limit:guest").toResponse();
       }
       await incrementGuestMessageCount(ip);
+      
+      // Create or get guest user for this IP
+      const guestUser = await getOrCreateGuestUserByIP(ip);
+      userType = "guest";
+      userId = guestUser.id;
     } else {
-      const messageCount = await getMessageCountByUserId({
-        id: session.user.id,
-        differenceInHours: 24,
-      });
+      userType = session.user.type;
+      userId = session.user.id;
 
-      if (messageCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
-        return new ChatSDKError("rate_limit:regular").toResponse();
+      if (userType === "guest") {
+        const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+        const guestMessageCount = await getGuestMessageCount(ip);
+
+        console.log("DEBUG: Guest Rate Limit Check", {
+          ip,
+          guestMessageCount,
+          limit: entitlementsByUserType[userType].maxMessagesPerDay,
+        });
+
+        if (
+          guestMessageCount >= entitlementsByUserType[userType].maxMessagesPerDay
+        ) {
+          console.log("DEBUG: Limit Reached");
+          return new ChatSDKError("rate_limit:guest").toResponse();
+        }
+        await incrementGuestMessageCount(ip);
+      } else {
+        const messageCount = await getMessageCountByUserId({
+          id: session.user.id,
+          differenceInHours: 24,
+        });
+
+        if (messageCount >= entitlementsByUserType[userType].maxMessagesPerDay) {
+          return new ChatSDKError("rate_limit:regular").toResponse();
+        }
       }
     }
 
     const chat = await getChatById({ id });
 
     if (chat) {
-      if (chat.userId !== session.user.id) {
+      if (chat.userId !== userId) {
         return new ChatSDKError("forbidden:chat").toResponse();
       }
     } else {
@@ -155,7 +154,7 @@ export async function POST(request: Request) {
 
       await saveChat({
         id,
-        userId: session.user.id,
+        userId: userId,
         title,
         visibility: selectedVisibilityType,
       });
@@ -165,7 +164,7 @@ export async function POST(request: Request) {
     const uiMessages = [...convertToUIMessages(messagesFromDb), message];
 
     // Fetch user profile for personalized responses
-    const userProfile = session.user.id
+    const userProfile = session?.user?.id
       ? await getUserProfile({ userId: session.user.id })
       : null;
 
@@ -190,9 +189,6 @@ export async function POST(request: Request) {
         },
       ],
     });
-
-    const streamId = generateUUID();
-    await createStreamId({ streamId, chatId: id });
 
     let finalMergedUsage: AppUsage | undefined;
 
@@ -281,16 +277,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const streamContext = getStreamContext();
-
-    if (streamContext) {
-      return new Response(
-        await streamContext.resumableStream(streamId, () =>
-          stream.pipeThrough(new JsonToSseTransformStream())
-        )
-      );
-    }
-
+    // Return regular streaming response (Redis resumable streams removed)
     return new Response(stream.pipeThrough(new JsonToSseTransformStream()));
   } catch (error) {
     const vercelId = request.headers.get("x-vercel-id");
